@@ -27,7 +27,7 @@
                         <div class="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-gray-300 transition">
                             <div class="flex items-center gap-3 mb-3">
                                 @if($tech->icon)
-                                    <img src="{{ Storage::url($tech->icon) }}" alt="{{ $tech->name }}" class="w-8 h-8 rounded">
+                                    <img src="{{ Storage::url($tech->icon) }}" alt="{{ $tech->name }}" class="w-8 h-auto rounded">
                                 @else
                                     <div class="w-8 h-8 bg-gradient-to-br from-blue-100 to-cyan-100 rounded flex items-center justify-center text-sm font-bold text-blue-600">
                                         {{ strtoupper(substr($tech->name, 0, 1)) }}

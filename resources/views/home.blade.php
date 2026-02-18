@@ -282,7 +282,7 @@
             @foreach($technologies as $tech)
                 <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-4 py-3 hover:shadow-md hover:border-gray-300 transition">
                     @if($tech->icon)
-                        <img src="{{ Storage::url($tech->icon) }}" alt="{{ $tech->name }}" class="w-6 h-6">
+                        <img src="{{ Storage::url($tech->icon) }}" alt="{{ $tech->name }}" class="w-6 h-auto">
                     @endif
                     <span class="text-sm font-medium text-gray-700">{{ $tech->name }}</span>
                 </div>
