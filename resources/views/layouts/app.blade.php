@@ -20,7 +20,7 @@
             <div class="flex items-center justify-between h-16">
                 {{-- Logo --}}
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
-                    <img src="{{ asset('images/logo.png') }}" alt="North Line Logo" class="w-20 h-auto">
+                    <img src="{{ asset('images/logo2.png') }}" alt="North Line Logo" class="w-20 h-auto">
                 </a>
 
                 {{-- Desktop Nav --}}
@@ -89,7 +89,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="md:col-span-2">
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="{{ asset('images/logo.png') }}" alt="North Line Logo" class="w-30 h-auto">
+                        <img src="{{ asset('images/logo2.png') }}" alt="North Line Logo" class="w-30 h-auto">
                     </div>
                     <p class="text-gray-500 text-sm max-w-md">We build websites, web applications, and systems that power businesses. Your vision, our expertise.</p>
                 </div>
