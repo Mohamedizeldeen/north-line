@@ -12,7 +12,9 @@
 */
 
 pest()->extend(Tests\TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    // Every public page queries content tables, so feature tests need the
+    // schema migrated into the in-memory SQLite database.
+    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
 
 /*

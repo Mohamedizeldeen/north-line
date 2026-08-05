@@ -1,6 +1,17 @@
 @extends('layouts.app')
-@section('title', $project->title)
-@section('meta_description', Str::limit($project->description, 160))
+
+@section('seo')
+    <x-seo :title="$project->title"
+           :description="meta_description($project->description, $project->content)"
+           :image="$project->image ?? null" />
+@endsection
+
+@push('schema')
+    <x-schema.breadcrumbs :items="[
+        ['name' => __('nav.projects'), 'url' => route('projects.index')],
+        ['name' => $project->title, 'url' => route('projects.show', $project)],
+    ]" />
+@endpush
 
 @section('content')
 {{-- 1. Project Header --}}
@@ -56,7 +67,7 @@
 
         @if($project->content)
             <div class="mt-8 prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                {!! nl2br(e($project->content)) !!}
+                {!! Str::markdown($project->content, ['html_input' => 'strip', 'allow_unsafe_links' => false]) !!}
             </div>
         @endif
     </div>

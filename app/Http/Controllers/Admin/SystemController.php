@@ -12,6 +12,7 @@ class SystemController extends Controller
     public function index()
     {
         $systems = System::orderBy('sort_order')->latest()->paginate(15);
+
         return view('admin.systems.index', compact('systems'));
     }
 
@@ -74,6 +75,7 @@ class SystemController extends Controller
     public function destroy(System $system)
     {
         $system->delete();
+
         return redirect()->route('admin.systems.index')->with('success', 'System deleted successfully.');
     }
 }

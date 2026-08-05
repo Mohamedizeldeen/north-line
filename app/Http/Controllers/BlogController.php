@@ -9,12 +9,13 @@ class BlogController extends Controller
     public function index()
     {
         $posts = BlogPost::published()->with('author')->latest('published_at')->paginate(9);
+
         return view('blog.index', compact('posts'));
     }
 
     public function show(BlogPost $post)
     {
-        if (!$post->is_published) {
+        if (! $post->is_published) {
             abort(404);
         }
 

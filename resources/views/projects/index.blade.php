@@ -1,6 +1,12 @@
 @extends('layouts.app')
-@section('title', 'Projects')
-@section('meta_description', 'Explore the projects built by North Line - websites, web apps, and systems.')
+
+@section('seo')
+    <x-seo page="projects" />
+@endsection
+
+@push('schema')
+    <x-schema.breadcrumbs :items="[['name' => __('nav.projects'), 'url' => route('projects.index')]]" />
+@endpush
 
 @section('content')
 {{-- 1. Header Section --}}
@@ -8,7 +14,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
             <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Portfolio</p>
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Our Projects</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Software Projects Built in Muscat, Oman</h1>
             <p class="text-gray-500 mt-3 max-w-xl mx-auto">A showcase of our latest work and the solutions we've built for our clients.</p>
         </div>
     </div>

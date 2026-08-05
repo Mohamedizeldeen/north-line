@@ -12,6 +12,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::latest()->paginate(15);
+
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -88,6 +89,7 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
+
         return redirect()->route('admin.projects.index')->with('success', 'Project deleted successfully.');
     }
 }

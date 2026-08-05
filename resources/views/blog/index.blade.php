@@ -1,6 +1,12 @@
 @extends('layouts.app')
-@section('title', 'Blog')
-@section('meta_description', 'Read the latest insights, tutorials, and updates from North Line Development.')
+
+@section('seo')
+    <x-seo page="blog" />
+@endsection
+
+@push('schema')
+    <x-schema.breadcrumbs :items="[['name' => __('nav.blog'), 'url' => route('blog.index')]]" />
+@endpush
 
 @section('content')
 {{-- 1. Header Section --}}
@@ -8,7 +14,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
             <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Our Blog</p>
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Blog</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Retail Technology Advice for Omani Stores</h1>
             <p class="text-gray-500 mt-3 max-w-xl mx-auto">Insights, tutorials, and updates from our team.</p>
         </div>
     </div>

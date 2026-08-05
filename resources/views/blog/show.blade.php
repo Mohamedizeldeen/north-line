@@ -1,6 +1,21 @@
 @extends('layouts.app')
-@section('title', $post->title)
-@section('meta_description', $post->excerpt ?? Str::limit(strip_tags($post->content), 160))
+
+@section('seo')
+    <x-seo :title="$post->title"
+           :description="meta_description($post->excerpt, $post->content)"
+           :image="$post->featured_image"
+           type="article"
+           :published-at="$post->published_at"
+           :modified-at="$post->updated_at" />
+@endsection
+
+@push('schema')
+    <x-schema.blog-posting :post="$post" />
+    <x-schema.breadcrumbs :items="[
+        ['name' => __('nav.blog'), 'url' => route('blog.index')],
+        ['name' => $post->title, 'url' => route('blog.show', $post)],
+    ]" />
+@endpush
 
 @section('content')
 {{-- 1. Article Header --}}
@@ -36,7 +51,7 @@
 <article class="py-10">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-            {!! nl2br(e($post->content)) !!}
+            {!! Str::markdown($post->content, ['html_input' => 'strip', 'allow_unsafe_links' => false]) !!}
         </div>
     </div>
 </article>

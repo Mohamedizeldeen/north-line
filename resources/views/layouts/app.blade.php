@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ site_dir() }}" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- -fav --}}
     <link rel="icon" href="{{ asset('images/fav.png') }}" type="image/x-icon">
-    <title>@yield('title', 'North Line') - North Line Development</title>
-    <meta name="description" content="@yield('meta_description', 'North Line - We build websites, web apps, and systems that power businesses.')">
+
+    {{-- Title, description, canonical, hreflang, Open Graph, Twitter. Every
+         page supplies its own via @section('seo'); see resources/views/components/seo.blade.php --}}
+    @hasSection('seo')
+        @yield('seo')
+    @else
+        <x-seo />
+    @endif
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <x-schema.organization />
+    @stack('schema')
     @stack('styles')
 </head>
 <body class="bg-white text-gray-900 antialiased min-h-screen flex flex-col">

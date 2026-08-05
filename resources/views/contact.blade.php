@@ -1,6 +1,39 @@
 @extends('layouts.app')
-@section('title', 'Contact Us')
-@section('meta_description', 'Get in touch with North Line. Let us know about your project and we will get back to you.')
+
+@php
+    // Single source for the FAQ: the visible markup below and the FAQPage
+    // JSON-LD both render from this array. Marking up a question that is not
+    // visible on the page is a structured-data violation, so never let the two
+    // drift apart. PHASE 3 moves these strings into lang/{locale}/faq.php.
+    $faqs = [
+        [
+            'question' => 'How long does a typical project take?',
+            'answer' => "It depends on the complexity. Simple websites take 2-4 weeks, while complex systems can take 2-6 months. We'll give you a timeline during our initial consultation.",
+        ],
+        [
+            'question' => 'What is your development process?',
+            'answer' => "We follow an agile approach: Discovery, Design, Development, and Launch. You'll be involved at every stage with regular updates and feedback sessions.",
+        ],
+        [
+            'question' => 'Do you provide ongoing support?',
+            'answer' => 'Yes! We offer maintenance packages to keep your application updated, secure, and running smoothly after launch.',
+        ],
+        [
+            'question' => 'Can you work with our existing systems?',
+            'answer' => "Absolutely. We're flexible and can connect to most of the tools you already use. Let us know what you're running and we'll adapt.",
+        ],
+    ];
+@endphp
+
+@section('seo')
+    <x-seo page="contact" />
+@endsection
+
+@push('schema')
+    <x-schema.local-business />
+    <x-schema.faq :items="$faqs" />
+    <x-schema.breadcrumbs :items="[['name' => __('nav.contact'), 'url' => route('contact')]]" />
+@endpush
 
 @section('content')
 {{-- 1. Header Section --}}
@@ -8,7 +41,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
             <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Contact</p>
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Get in Touch</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Contact North Line in Muscat, Oman</h1>
             <p class="text-gray-500 mt-3 max-w-xl mx-auto">Have a project in mind? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.</p>
         </div>
     </div>
@@ -122,22 +155,12 @@
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Frequently Asked Questions</h2>
         </div>
         <div class="space-y-4">
-            <div class="bg-white border border-gray-200 rounded-xl p-5">
-                <h3 class="font-semibold text-gray-900">How long does a typical project take?</h3>
-                <p class="text-gray-500 text-sm mt-2">It depends on the complexity. Simple websites take 2-4 weeks, while complex systems can take 2-6 months. We'll give you a timeline during our initial consultation.</p>
-            </div>
-            <div class="bg-white border border-gray-200 rounded-xl p-5">
-                <h3 class="font-semibold text-gray-900">What is your development process?</h3>
-                <p class="text-gray-500 text-sm mt-2">We follow an agile approach: Discovery, Design, Development, and Launch. You'll be involved at every stage with regular updates and feedback sessions.</p>
-            </div>
-            <div class="bg-white border border-gray-200 rounded-xl p-5">
-                <h3 class="font-semibold text-gray-900">Do you provide ongoing support?</h3>
-                <p class="text-gray-500 text-sm mt-2">Yes! We offer maintenance packages to keep your application updated, secure, and running smoothly after launch.</p>
-            </div>
-            <div class="bg-white border border-gray-200 rounded-xl p-5">
-                <h3 class="font-semibold text-gray-900">Can you work with our existing tech stack?</h3>
-                <p class="text-gray-500 text-sm mt-2">Absolutely. We're flexible and can work with most modern technologies and frameworks. Let us know what you're using and we'll adapt.</p>
-            </div>
+            @foreach($faqs as $faq)
+                <div class="bg-white border border-gray-200 rounded-xl p-5">
+                    <h3 class="font-semibold text-gray-900">{{ $faq['question'] }}</h3>
+                    <p class="text-gray-500 text-sm mt-2">{{ $faq['answer'] }}</p>
+                </div>
+            @endforeach
         </div>
     </div>
 </section>

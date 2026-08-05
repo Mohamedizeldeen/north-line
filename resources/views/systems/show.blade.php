@@ -1,6 +1,17 @@
 @extends('layouts.app')
-@section('title', $system->title)
-@section('meta_description', Str::limit($system->description, 160))
+
+@section('seo')
+    <x-seo :title="$system->title"
+           :description="meta_description($system->description, $system->content)"
+           :image="$system->image ?? null" />
+@endsection
+
+@push('schema')
+    <x-schema.breadcrumbs :items="[
+        ['name' => __('nav.systems'), 'url' => route('systems.index')],
+        ['name' => $system->title, 'url' => route('systems.show', $system)],
+    ]" />
+@endpush
 
 @section('content')
 {{-- 1. System Header --}}
@@ -39,7 +50,7 @@
 <section class="py-10">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-            {!! nl2br(e($system->content)) !!}
+            {!! Str::markdown($system->content, ['html_input' => 'strip', 'allow_unsafe_links' => false]) !!}
         </div>
     </div>
 </section>

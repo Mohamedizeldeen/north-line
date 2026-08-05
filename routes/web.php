@@ -1,18 +1,19 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\BlogController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\SystemController;
-use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\Admin\BlogPostController as AdminBlogPostController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\SystemController as AdminSystemController;
 use App\Http\Controllers\Admin\TechnologyController as AdminTechnologyController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\SystemController;
+use App\Http\Controllers\TechnologyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// XML sitemap, generated from the routes + published content below.
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // Blog
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');

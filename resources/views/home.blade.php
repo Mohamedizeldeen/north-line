@@ -1,6 +1,12 @@
 @extends('layouts.app')
-@section('title', 'Home')
-@section('meta_description', 'North Line - We build websites, web applications, and systems that power businesses.')
+
+@section('seo')
+    <x-seo page="home" />
+@endsection
+
+@push('schema')
+    <x-schema.local-business />
+@endpush
 
 @section('content')
 {{-- 1. Hero Section --}}
@@ -9,15 +15,15 @@
         <div class="text-center max-w-4xl mx-auto">
             <div class="inline-flex items-center gap-2 bg-blue-100 border border-blue-200 rounded-full px-4 py-1.5 text-sm text-blue-700 mb-6">
                 <span class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
-                Building Digital Solutions
+                Retail Systems · Muscat, Oman
             </div>
             <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-gray-900">
-                We Build
-                <span class="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent"> Websites, Apps</span>
-                <br>& Systems
+                The Complete System for
+                <span class="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent"> Fashion Stores</span>
+                <br>in Oman
             </h1>
             <p class="text-gray-600 text-lg md:text-xl mt-6 max-w-2xl mx-auto leading-relaxed">
-                North Line delivers high-quality web development solutions. From stunning websites to powerful SaaS platforms, we turn your ideas into reality.
+                One online store, one point of sale, and one inventory shared across every branch — so you never sell the same piece twice.
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
                 <a href="{{ route('contact') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-xl font-semibold text-lg transition shadow-lg shadow-blue-600/25">

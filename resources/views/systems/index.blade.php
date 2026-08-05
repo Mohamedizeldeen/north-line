@@ -1,6 +1,12 @@
 @extends('layouts.app')
-@section('title', 'Systems & SaaS')
-@section('meta_description', 'Explore our ready-to-use systems and SaaS solutions - POS, CRM, and more.')
+
+@section('seo')
+    <x-seo page="systems" />
+@endsection
+
+@push('schema')
+    <x-schema.breadcrumbs :items="[['name' => __('nav.systems'), 'url' => route('systems.index')]]" />
+@endpush
 
 @section('content')
 {{-- 1. Header Section --}}
@@ -8,7 +14,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
             <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Products</p>
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Our Systems & SaaS</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Ready-Made Business Systems for Oman</h1>
             <p class="text-gray-500 mt-3 max-w-2xl mx-auto">Ready-to-use software solutions built to streamline your business operations. Try our demos and see what works for you.</p>
         </div>
     </div>

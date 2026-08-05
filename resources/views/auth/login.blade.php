@@ -1,5 +1,8 @@
 @extends('layouts.app')
-@section('title', 'Login')
+
+@section('seo')
+    <x-seo page="login" :noindex="true" />
+@endsection
 
 @section('content')
 <div class="min-h-[70vh] flex items-center justify-center px-4 bg-gray-50">

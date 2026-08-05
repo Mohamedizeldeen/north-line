@@ -1,6 +1,12 @@
 @extends('layouts.app')
-@section('title', 'Technologies')
-@section('meta_description', 'Explore the technologies and tools North Line uses to build modern web solutions.')
+
+@section('seo')
+    <x-seo page="technologies" />
+@endsection
+
+@push('schema')
+    <x-schema.breadcrumbs :items="[['name' => __('nav.technologies'), 'url' => route('technologies.index')]]" />
+@endpush
 
 @section('content')
 {{-- 1. Header Section --}}
@@ -8,7 +14,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
             <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Tech Stack</p>
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Technologies We Use</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">The Technology Behind North Line</h1>
             <p class="text-gray-500 mt-3 max-w-xl mx-auto">We work with modern, battle-tested technologies to deliver reliable solutions.</p>
         </div>
     </div>
