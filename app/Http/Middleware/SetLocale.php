@@ -33,6 +33,13 @@ class SetLocale
         Carbon::setLocale($locale);
         URL::defaults(['locale' => $locale]);
 
+        // Route parameters are handed to controller actions positionally, so a
+        // leading {locale} would arrive as the first argument of every action
+        // — show(System $system) would receive the string "en". Drop it now
+        // that it has been read: this runs after SubstituteBindings, so models
+        // are already resolved, and URL::defaults above keeps route() working.
+        $request->route()?->forgetParameter('locale');
+
         return $next($request);
     }
 }

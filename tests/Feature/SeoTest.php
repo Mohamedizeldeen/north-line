@@ -247,3 +247,75 @@ it('publishes exactly the locales the tests expect', function () {
     expect(array_keys(config('site.locales')))->toBe(expectedLocales())
         ->and(config('app.locale'))->toBe('ar');
 });
+
+it('resolves hreflang across differing slugs and stays silent without a translation', function () {
+    $group = 900;
+
+    $ar = App\Models\System::create([
+        'locale' => 'ar', 'translation_group_id' => $group,
+        'title' => 'متجر إلكتروني', 'slug' => 'متجر-إلكتروني',
+        'description' => 'وصف', 'is_published' => true,
+    ]);
+    $en = App\Models\System::create([
+        'locale' => 'en', 'translation_group_id' => $group,
+        'title' => 'Online store', 'slug' => 'online-store',
+        'description' => 'Description', 'is_published' => true,
+    ]);
+    // Deliberately unpaired.
+    $orphan = App\Models\System::create([
+        'locale' => 'en', 'translation_group_id' => 901,
+        'title' => 'Orphan', 'slug' => 'orphan', 'description' => 'x', 'is_published' => true,
+    ]);
+
+    $html = $this->get('/en/systems/online-store')->assertOk()->getContent();
+
+    // The Arabic alternate must point at the ARABIC slug, not a mirrored English one.
+    expect($html)->toContain('hreflang="ar" href="'.url('/ar/systems/'.rawurlencode($ar->slug)).'"')
+        ->and($html)->toContain('hreflang="en" href="'.url('/en/systems/'.$en->slug).'"');
+
+    // No translation → no hreflang at all, rather than one pointing somewhere wrong.
+    $orphanHtml = $this->get('/en/systems/orphan')->assertOk()->getContent();
+    expect(preg_match_all('#rel="alternate" hreflang=#', $orphanHtml))->toBe(0);
+
+    // Self-canonical either way.
+    expect($orphanHtml)->toContain('<link rel="canonical" href="'.url('/en/systems/orphan').'">');
+});
+
+it('scopes a slug lookup to the locale in the URL', function () {
+    App\Models\System::create([
+        'locale' => 'en', 'translation_group_id' => 910,
+        'title' => 'Shared', 'slug' => 'shared', 'description' => 'x', 'is_published' => true,
+    ]);
+
+    // Same slug, different language — both are legitimate, distinct documents.
+    App\Models\System::create([
+        'locale' => 'ar', 'translation_group_id' => 910,
+        'title' => 'مشترك', 'slug' => 'shared', 'description' => 'وصف', 'is_published' => true,
+    ]);
+
+    expect($this->get('/en/systems/shared')->getContent())->toContain('Shared');
+    expect($this->get('/ar/systems/shared')->getContent())->toContain('مشترك');
+});
+
+it('keeps legacy technical posts out of the main blog feed', function () {
+    $author = App\Models\User::create(['name' => 'A', 'email' => 't@e.com', 'password' => 'x']);
+
+    App\Models\BlogPost::create([
+        'user_id' => $author->id, 'locale' => 'en', 'translation_group_id' => 920,
+        'title' => 'Why We Use A Framework', 'slug' => 'framework-post', 'content' => 'x',
+        'is_published' => true, 'is_technical' => true, 'published_at' => now()->subDay(),
+    ]);
+    App\Models\BlogPost::create([
+        'user_id' => $author->id, 'locale' => 'en', 'translation_group_id' => 921,
+        'title' => 'What A Shop Owner Needs', 'slug' => 'owner-post', 'content' => 'x',
+        'is_published' => true, 'is_technical' => false, 'published_at' => now()->subDay(),
+    ]);
+
+    $feed = $this->get('/en/blog')->assertOk()->getContent();
+
+    expect($feed)->toContain('What A Shop Owner Needs')
+        ->and($feed)->not->toContain('Why We Use A Framework');
+
+    // Still reachable directly — demoted, not deleted.
+    $this->get('/en/blog/framework-post')->assertOk();
+});

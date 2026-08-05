@@ -10,9 +10,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $featuredProjects = Project::published()->featured()->orderBy('sort_order')->take(3)->get();
-        $latestPosts = BlogPost::published()->latest('published_at')->take(3)->get();
-        $systems = System::published()->orderBy('sort_order')->take(4)->get();
+        $featuredProjects = Project::inLocale()->published()->featured()->orderBy('sort_order')->take(3)->get();
+        $latestPosts = BlogPost::inLocale()->published()->where('is_technical', false)->latest('published_at')->take(3)->get();
+        $systems = System::inLocale()->published()->orderBy('sort_order')->take(4)->get();
 
         return view('home', compact('featuredProjects', 'latestPosts', 'systems'));
     }

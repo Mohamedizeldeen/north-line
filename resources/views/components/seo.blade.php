@@ -67,9 +67,18 @@
     locale INCLUDING itself, which is what makes the set reciprocal — if ar
     points to en but en does not point back, Google discards both.
 --}}
-@if(count($locales) > 1)
-    @foreach($locales as $code => $meta)
-        <link rel="alternate" hreflang="{{ $meta['hreflang'] }}" href="{{ localized_url($code) }}">
+@php
+    // Only locales in which this exact page exists. A detail page with no
+    // translation yet contributes nothing here — an hreflang pointing at a
+    // page that is not the equivalent is worse than no hreflang at all.
+    $alternates = collect($locales)
+        ->map(fn ($meta, $code) => ['hreflang' => $meta['hreflang'], 'url' => localized_alternate($code)])
+        ->filter(fn ($alt) => filled($alt['url']));
+@endphp
+
+@if($alternates->count() > 1)
+    @foreach($alternates as $alt)
+        <link rel="alternate" hreflang="{{ $alt['hreflang'] }}" href="{{ $alt['url'] }}">
     @endforeach
     {{-- x-default is the negotiating root when no locale is pinned as default. --}}
     <link rel="alternate" hreflang="x-default" href="{{ config('site.x_default_locale') ? localized_url(config('site.x_default_locale')) : url('/') }}">

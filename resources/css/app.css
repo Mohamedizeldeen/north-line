@@ -307,19 +307,70 @@
         --tw-gradient-position: to bottom right in oklab;
     }
 
-    /* Arabic sits lower and needs more leading than Latin at the same size. */
-    [dir='rtl'] body {
-        line-height: 1.85;
-    }
-    [dir='rtl'] h1,
-    [dir='rtl'] h2,
-    [dir='rtl'] h3 {
-        line-height: 1.4;
+    /* ---------------------------------------------------------------
+       Arabic typography
+
+       Arabic is a joined script. Letter-spacing pulls the connections
+       apart and is the single most damaging thing you can do to it, so
+       tracking is forced back to normal — Tailwind's tracking-tight on a
+       heading would otherwise break the joins.
+
+       Leading is size-dependent, not one global value: Arabic needs more
+       room than Latin at body size (ascenders, descenders and diacritics
+       stack vertically), but display sizes need far LESS than the body
+       ratio or the lines drift apart.
+       --------------------------------------------------------------- */
+
+    [dir='rtl'] {
+        letter-spacing: normal !important;
+        /* Latin numerals — Omani retail prices are written 45 OMR, not ٤٥. */
+        font-variant-numeric: lining-nums;
     }
 
-    /* Keep Latin numerals — Omani retail prices are written 45 OMR, not ٤٥. */
-    [dir='rtl'] {
-        font-variant-numeric: lining-nums;
+    [dir='rtl'] body {
+        line-height: 1.75;
+    }
+
+    /* IBM Plex Sans Arabic tops out at 700; 800 would be synthesised into a
+       smeared fake bold. */
+    [dir='rtl'] .font-extrabold {
+        font-weight: 700;
+    }
+
+    [dir='rtl'] h1 {
+        line-height: 1.28;
+    }
+
+    [dir='rtl'] h2 {
+        line-height: 1.35;
+    }
+
+    [dir='rtl'] h3,
+    [dir='rtl'] h4 {
+        line-height: 1.45;
+    }
+
+    /* Display sizes tighten further — the larger the type, the smaller the
+       ratio needs to be. */
+    [dir='rtl'] .text-4xl,
+    [dir='rtl'] .text-5xl,
+    [dir='rtl'] .text-6xl,
+    [dir='rtl'] .text-7xl {
+        line-height: 1.25;
+    }
+
+    [dir='rtl'] .text-2xl,
+    [dir='rtl'] .text-3xl {
+        line-height: 1.35;
+    }
+
+    /* Long-form Arabic reads better a touch looser than the UI. */
+    [dir='rtl'] .prose {
+        line-height: 1.95;
+    }
+
+    [dir='rtl'] .prose :is(h1, h2, h3, h4) {
+        line-height: 1.4;
     }
 }
 

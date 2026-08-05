@@ -8,7 +8,7 @@ class SystemController extends Controller
 {
     public function index()
     {
-        $systems = System::published()->orderBy('sort_order')->get();
+        $systems = System::inLocale()->published()->orderBy('sort_order')->get();
 
         return view('systems.index', compact('systems'));
     }

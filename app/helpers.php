@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Concerns\HasLocale;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 if (! function_exists('meta_description')) {
@@ -28,33 +30,70 @@ if (! function_exists('meta_description')) {
     }
 }
 
-if (! function_exists('localized_url')) {
+if (! function_exists('localized_alternate')) {
     /**
-     * URL of the current page in another locale, preserving the path and
-     * route parameters. Used for hreflang alternates and the language
-     * switcher.
+     * URL of the EXACT equivalent of this page in another locale, or null when
+     * there is no equivalent.
      *
-     * PHASE 2: only one locale is configured, so this returns the current URL.
-     * PHASE 3 adds the /{locale} route prefix, at which point the route's
-     * `locale` parameter is swapped and every consumer keeps working.
+     * Null is the important case. A detail page's slug differs per language
+     * (/ar/blog/تكلفة-متجر vs /en/blog/store-cost), so the locale segment cannot
+     * simply be swapped — the counterpart is found through the translation
+     * group. When an article has not been written in the other language,
+     * hreflang must stay silent rather than point at a page that is not the
+     * translation.
      */
-    function localized_url(string $locale): string
+    function localized_alternate(string $locale): ?string
     {
         $route = request()->route();
 
-        // Pages outside the locale group (login, admin) have no counterpart —
-        // send the switcher to that language's homepage rather than nowhere.
-        if (! $route || ! $route->getName() || ! array_key_exists('locale', $route->parameters())) {
-            return route('home', ['locale' => $locale]);
+        // SetLocale removes the {locale} parameter after reading it, so the
+        // route's URI — not its parameters — is what identifies a localized page.
+        if (! $route || ! $route->getName() || ! str_starts_with($route->uri(), '{locale}')) {
+            return null;
         }
 
-        $url = route($route->getName(), ['locale' => $locale] + $route->parameters());
+        $parameters = ['locale' => $locale];
 
-        // Preserve pagination so switching language does not drop you back to
-        // page 1 of a listing.
+        foreach ($route->parameters() as $key => $value) {
+            if ($key === 'locale') {
+                continue;
+            }
+
+            if ($value instanceof Model && in_array(HasLocale::class, class_uses_recursive($value), true)) {
+                $translation = $value->translation($locale);
+
+                if (! $translation) {
+                    return null;
+                }
+
+                $parameters[$key] = $translation;
+
+                continue;
+            }
+
+            $parameters[$key] = $value;
+        }
+
+        $url = route($route->getName(), $parameters);
+
+        // Keep the reader on the same page of a listing.
         $page = request()->integer('page');
 
         return $page > 1 ? $url.'?page='.$page : $url;
+    }
+}
+
+if (! function_exists('localized_url')) {
+    /**
+     * Where the language switcher should send the reader.
+     *
+     * Unlike localized_alternate() this always returns something: if the exact
+     * page does not exist in the other language, fall back to that language's
+     * homepage rather than a dead link.
+     */
+    function localized_url(string $locale): string
+    {
+        return localized_alternate($locale) ?? route('home', ['locale' => $locale]);
     }
 }
 

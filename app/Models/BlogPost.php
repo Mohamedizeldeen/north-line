@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasLocale;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BlogPost extends Model
 {
-    use HasFactory;
+    use HasFactory, HasLocale;
 
     protected $fillable = [
+        'is_technical',
+        'translation_group_id',
+        'locale',
         'user_id',
         'title',
         'slug',
@@ -25,6 +29,7 @@ class BlogPost extends Model
     {
         return [
             'is_published' => 'boolean',
+            'is_technical' => 'boolean',
             'published_at' => 'datetime',
         ];
     }

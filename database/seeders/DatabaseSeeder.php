@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
                 'is_admin' => true,
             ]
         );
-          $admin = User::firstOrCreate(
+        $admin = User::firstOrCreate(
             ['email' => 'eng.mohamed.izeldeen@gmail.com'],
             [
                 'name' => 'Mohamed Izeldeen',
