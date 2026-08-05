@@ -22,7 +22,6 @@ return [
     // E.164 for schema.org, plus the human form shown in the footer.
     'phones' => [
         ['e164' => '+96898084952', 'display' => '(+968) 9808-4952'],
-        ['e164' => '+96899822690', 'display' => '(+968) 9982-2690'],
     ],
 
     'address' => [

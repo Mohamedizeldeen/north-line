@@ -110,8 +110,9 @@
                     </div>
                     <div>
                     <h3 class="font-semibold text-gray-900">Phone</h3>
-                    <p class="text-gray-500 text-sm">(+968) 9808-4952</p>
-                    <p class="text-gray-500 text-sm">(+968) 9982-2690</p>
+                    @foreach(config('site.phones') as $phone)
+                        <p class="text-gray-500 text-sm"><a href="tel:{{ $phone['e164'] }}" dir="ltr">{{ $phone['display'] }}</a></p>
+                    @endforeach
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
