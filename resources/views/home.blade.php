@@ -9,347 +9,204 @@
 @endpush
 
 @section('content')
-{{-- 1. Hero Section --}}
-<section class="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-cyan-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative">
+
+{{-- Hero ------------------------------------------------------------------ --}}
+<section class="relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 md:pt-28 md:pb-24">
         <div class="text-center max-w-4xl mx-auto">
-            <div class="inline-flex items-center gap-2 bg-blue-100 border border-blue-200 rounded-full px-4 py-1.5 text-sm text-blue-700 mb-6">
-                <span class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
-                Retail Systems · Muscat, Oman
-            </div>
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-gray-900">
-                The Complete System for
-                <span class="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent"> Fashion Stores</span>
-                <br>in Oman
-            </h1>
-            <p class="text-gray-600 text-lg md:text-xl mt-6 max-w-2xl mx-auto leading-relaxed">
-                One online store, one point of sale, and one inventory shared across every branch — so you never sell the same piece twice.
+            <p class="glass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm text-blue-800">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                {{ __('home.hero.eyebrow') }}
             </p>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-                <a href="{{ route('contact') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-xl font-semibold text-lg transition shadow-lg shadow-blue-600/25">
-                    Start Your Project
+
+            {{-- Each fragment is inline-block so a phrase never splits across
+                 two lines — the break lands between fragments, not inside one. --}}
+            <h1 class="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 text-balance">
+                <span class="inline-block">{{ __('home.hero.title_lead') }}</span>
+                <span class="inline-block bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent">{{ __('home.hero.title_accent') }}</span>
+                <span class="block mt-1">{{ __('home.hero.title_tail') }}</span>
+            </h1>
+
+            <p class="mt-6 text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
+                {{ __('home.hero.subtitle') }}
+            </p>
+
+            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <a href="{{ route('systems.index') }}" class="glass-btn-primary w-full sm:w-auto px-7 py-3.5 rounded-full font-semibold">
+                    {{ __('home.hero.cta_primary') }}
                 </a>
-                <a href="{{ route('projects.index') }}" class="bg-white hover:bg-gray-50 text-gray-900 px-8 py-3.5 rounded-xl font-semibold text-lg transition border border-gray-300 shadow-sm">
-                    View Our Work
+                <a href="{{ route('contact') }}" class="glass-btn w-full sm:w-auto px-7 py-3.5 rounded-full font-semibold text-slate-800">
+                    {{ __('home.hero.cta_secondary') }}
                 </a>
             </div>
         </div>
-    </div>
-</section>
 
-{{-- 2. Services Section --}}
-<section class="py-20 border-t border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14">
-            <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Our Services</p>
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">What We Do</h2>
-            <p class="text-gray-500 mt-3 max-w-xl mx-auto">We provide end-to-end development services tailored to your business needs.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white border border-gray-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-lg transition group">
-                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-blue-100 transition">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-                </div>
-                <h3 class="text-xl font-bold mb-3 text-gray-900">Websites</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">Beautiful, responsive websites that make a lasting impression. From landing pages to complex corporate sites.</p>
-            </div>
-
-            <div class="bg-white border border-gray-200 rounded-2xl p-8 hover:border-cyan-300 hover:shadow-lg transition group">
-                <div class="w-12 h-12 bg-cyan-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-cyan-100 transition">
-                    <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                </div>
-                <h3 class="text-xl font-bold mb-3 text-gray-900">Web Applications</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">Custom web applications built with modern technologies. Scalable, secure, and built for performance.</p>
-            </div>
-
-            <div class="bg-white border border-gray-200 rounded-2xl p-8 hover:border-purple-300 hover:shadow-lg transition group">
-                <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-purple-100 transition">
-                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                </div>
-                <h3 class="text-xl font-bold mb-3 text-gray-900">Systems & SaaS</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">Enterprise-grade systems like POS, CRM, and ERP. Ready-to-use solutions or custom-built for your needs.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-{{-- 3. Why Choose Us --}}
-<section class="py-20 bg-gray-50 border-t border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-                <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Why Choose Us</p>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">We Build Software That Drives Results</h2>
-                <p class="text-gray-500 mt-4 leading-relaxed">We're not just developers — we're partners in your digital success. Our team combines technical expertise with business acumen to deliver solutions that make a real impact.</p>
-
-                <div class="mt-8 space-y-6">
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center shrink-0">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-gray-900">Fast Delivery</h4>
-                            <p class="text-gray-500 text-sm mt-1">We deliver projects on-time without compromising on quality. Agile methodology keeps things moving.</p>
-                        </div>
+        {{-- Trust strip --}}
+        <div class="mt-16 glass rounded-3xl p-6 md:p-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                @foreach(__('home.trust.items') as $stat)
+                    <div>
+                        <div class="text-2xl md:text-3xl font-extrabold text-slate-900">{{ $stat['value'] }}</div>
+                        <div class="mt-1 text-sm text-slate-600 leading-snug">{{ $stat['label'] }}</div>
                     </div>
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center shrink-0">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-gray-900">Secure & Reliable</h4>
-                            <p class="text-gray-500 text-sm mt-1">Security-first approach with industry best practices. Your data and users are always protected.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center shrink-0">
-                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-gray-900">Ongoing Support</h4>
-                            <p class="text-gray-500 text-sm mt-1">We don't disappear after launch. Continuous maintenance and support to keep things running smoothly.</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
-            <div class="bg-gradient-to-br from-blue-100 to-cyan-100 rounded-3xl p-12 flex items-center justify-center">
-                <div class="text-center">
-                    <div class="w-24 h-24 p-2 bg-white rounded-2xl shadow-lg flex items-center justify-center mx-auto mb-6">
-<img src="{{ asset('images/logo.png') }}" alt="North Line Logo">
-                </div>
-                    <p class="text-gray-700 font-semibold text-lg">Your Digital Partner</p>
-                    <p class="text-gray-500 text-sm mt-1">From concept to completion</p>
-                </div>
-            </div>
+            <p class="mt-6 pt-5 border-t border-white/60 text-center text-sm text-slate-500">
+                {{ __('home.trust.note') }}
+            </p>
         </div>
     </div>
 </section>
 
-{{-- 4. How We Work --}}
-<section class="py-20 border-t border-gray-100">
+{{-- Problem, in the customer's own words ---------------------------------- --}}
+<section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14">
-            <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Our Process</p>
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">How We Work</h2>
-            <p class="text-gray-500 mt-3 max-w-xl mx-auto">A streamlined process that takes your project from idea to launch.</p>
+        <div class="text-center max-w-2xl mx-auto">
+            <p class="text-sm font-semibold uppercase tracking-wider text-blue-700">{{ __('home.problem.eyebrow') }}</p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-bold text-slate-900">{{ __('home.problem.title') }}</h2>
+            <p class="mt-3 text-slate-600">{{ __('home.problem.subtitle') }}</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="text-center">
-                <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <span class="text-blue-600 font-bold text-xl">01</span>
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-5">
+            @foreach(__('home.problem.items') as $item)
+                <div class="glass-card rounded-3xl p-6">
+                    <p class="text-lg font-bold text-slate-900 leading-snug">&ldquo;{{ $item['quote'] }}&rdquo;</p>
+                    <p class="mt-3 text-sm text-slate-600 leading-relaxed">{{ $item['body'] }}</p>
                 </div>
-                <h3 class="font-bold text-gray-900 mb-2">Discovery</h3>
-                <p class="text-gray-500 text-sm">We learn about your business, goals, and requirements to define the project scope.</p>
-            </div>
-            <div class="text-center">
-                <div class="w-14 h-14 bg-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <span class="text-cyan-600 font-bold text-xl">02</span>
-                </div>
-                <h3 class="font-bold text-gray-900 mb-2">Design</h3>
-                <p class="text-gray-500 text-sm">We create wireframes and designs that align with your brand and user expectations.</p>
-            </div>
-            <div class="text-center">
-                <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <span class="text-purple-600 font-bold text-xl">03</span>
-                </div>
-                <h3 class="font-bold text-gray-900 mb-2">Development</h3>
-                <p class="text-gray-500 text-sm">We build your solution using modern technologies with iterative feedback cycles.</p>
-            </div>
-            <div class="text-center">
-                <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <span class="text-green-600 font-bold text-xl">04</span>
-                </div>
-                <h3 class="font-bold text-gray-900 mb-2">Launch & Support</h3>
-                <p class="text-gray-500 text-sm">We deploy your project and provide ongoing maintenance and support.</p>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
 
-{{-- 5. Featured Projects --}}
+{{-- The five products ----------------------------------------------------- --}}
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto">
+            <p class="text-sm font-semibold uppercase tracking-wider text-blue-700">{{ __('home.solution.eyebrow') }}</p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-bold text-slate-900">{{ __('home.solution.title') }}</h2>
+            <p class="mt-3 text-slate-600">{{ __('home.solution.subtitle') }}</p>
+        </div>
+
+        @php
+            // Index-matched to home.solution.items: the copy stays in the
+            // language files, only the icon path lives here.
+            $icons = [
+                'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z',
+                'M15 12a3 3 0 11-6 0 3 3 0 016 0zM2.46 12C3.73 7.94 7.52 5 12 5s8.27 2.94 9.54 7c-1.27 4.06-5.06 7-9.54 7s-8.27-2.94-9.54-7z',
+                'M9 14l6-6M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6z',
+                'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
+                'M9 17v-6h12M9 17H4V5a2 2 0 012-2h9l4 4v4M9 17l-2 3h12l-2-3',
+                'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+            ];
+        @endphp
+
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            @foreach(__('home.solution.items') as $i => $item)
+                <div class="glass-card rounded-3xl p-6">
+                    <div class="glass-subtle w-12 h-12 rounded-2xl flex items-center justify-center text-blue-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icons[$i] ?? $icons[0] }}"/>
+                        </svg>
+                    </div>
+                    <h3 class="mt-4 text-lg font-bold text-slate-900">{{ $item['name'] }}</h3>
+                    <p class="mt-2 text-sm text-slate-600 leading-relaxed">{{ $item['body'] }}</p>
+                </div>
+            @endforeach
+        </div>
+
+        <div class="mt-10 text-center">
+            <a href="{{ route('systems.index') }}" class="glass-btn inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-slate-800">
+                {{ __('nav.products') }}
+                <svg class="w-4 h-4 rtl-flip" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+{{-- Featured work --------------------------------------------------------- --}}
 @if($featuredProjects->isNotEmpty())
-<section class="py-20 bg-gray-50 border-t border-gray-100">
+<section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-end justify-between mb-10">
-            <div>
-                <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Portfolio</p>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Featured Projects</h2>
-                <p class="text-gray-500 mt-2">Some of our recent work we're proud of.</p>
-            </div>
-            <a href="{{ route('projects.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium hidden sm:block">View All &rarr;</a>
+        <div class="text-center max-w-2xl mx-auto">
+            <p class="text-sm font-semibold uppercase tracking-wider text-blue-700">{{ __('home.work.eyebrow') }}</p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-bold text-slate-900">{{ __('home.work.title') }}</h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-5">
             @foreach($featuredProjects as $project)
-                <a href="{{ route('projects.show', $project) }}" class="group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg hover:border-gray-300 transition">
+                <a href="{{ route('projects.show', $project) }}" class="glass-card rounded-3xl overflow-hidden block">
                     @if($project->image)
-                        <div class="aspect-video bg-gray-100 overflow-hidden">
-                            <img src="{{ Storage::url($project->image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        </div>
-                    @else
-                        <div class="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                            <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        <div class="aspect-video bg-white/40 overflow-hidden">
+                            <img src="{{ Storage::disk('public')->url($project->image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover" loading="lazy">
                         </div>
                     @endif
                     <div class="p-5">
-                        <h3 class="font-bold text-lg text-gray-900 group-hover:text-blue-600 transition">{{ $project->title }}</h3>
-                        <p class="text-gray-500 text-sm mt-2 line-clamp-2">{{ $project->description }}</p>
-                        @if($project->technologies_used)
-                            <div class="flex flex-wrap gap-1.5 mt-3">
-                                @foreach(array_slice($project->technologies_used, 0, 3) as $tech)
-                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{{ $tech }}</span>
-                                @endforeach
-                            </div>
-                        @endif
+                        <h3 class="font-bold text-slate-900">{{ $project->title }}</h3>
+                        <p class="mt-2 text-sm text-slate-600 line-clamp-2">{{ $project->description }}</p>
                     </div>
                 </a>
             @endforeach
         </div>
-    </div>
-</section>
-@endif
 
-{{-- 6. Stats / Numbers --}}
-<section class="py-20 border-t border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14">
-            <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Our Impact</p>
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Numbers That Speak</h2>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="text-center">
-                <div class="text-4xl md:text-5xl font-extrabold text-blue-600">50+</div>
-                <p class="text-gray-500 mt-2 text-sm font-medium">Projects Delivered</p>
-            </div>
-            <div class="text-center">
-                <div class="text-4xl md:text-5xl font-extrabold text-cyan-600">30+</div>
-                <p class="text-gray-500 mt-2 text-sm font-medium">Happy Clients</p>
-            </div>
-            <div class="text-center">
-                <div class="text-4xl md:text-5xl font-extrabold text-purple-600">5+</div>
-                <p class="text-gray-500 mt-2 text-sm font-medium">Years Experience</p>
-            </div>
-            <div class="text-center">
-                <div class="text-4xl md:text-5xl font-extrabold text-green-600">99%</div>
-                <p class="text-gray-500 mt-2 text-sm font-medium">Client Satisfaction</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-{{-- 7. Systems / SaaS --}}
-@if($systems->isNotEmpty())
-<section class="py-20 bg-gray-50 border-t border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14">
-            <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Products</p>
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Our Systems & SaaS</h2>
-            <p class="text-gray-500 mt-3 max-w-xl mx-auto">Ready-to-use software solutions for your business.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-{{ min($systems->count(), 4) }} gap-6">
-            @foreach($systems as $system)
-                <div class="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-blue-200 transition">
-                    @if($system->image)
-                        <img src="{{ Storage::url($system->image) }}" alt="{{ $system->title }}" class="w-full h-40 object-cover rounded-xl mb-4">
-                    @endif
-                    <h3 class="text-lg font-bold text-gray-900">{{ $system->title }}</h3>
-                    <p class="text-gray-500 text-sm mt-2 line-clamp-3">{{ $system->description }}</p>
-                    <div class="mt-4 flex gap-3">
-                        @if($system->demo_url)
-                            <a href="{{ $system->demo_url }}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">Try Demo</a>
-                        @endif
-                        <a href="{{ route('systems.show', $system) }}" class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition border border-gray-300">Learn More</a>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        <div class="text-center mt-8">
-            <a href="{{ route('systems.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">View All Systems &rarr;</a>
+        <div class="mt-10 text-center">
+            <a href="{{ route('projects.index') }}" class="glass-btn inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-slate-800">
+                {{ __('home.work.cta') }}
+                <svg class="w-4 h-4 rtl-flip" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
         </div>
     </div>
 </section>
 @endif
 
-{{-- 8. Technologies --}}
-@if($technologies->isNotEmpty())
-<section class="py-20 border-t border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14">
-            <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Tech Stack</p>
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Technologies We Use</h2>
-            <p class="text-gray-500 mt-3 max-w-xl mx-auto">We work with modern, battle-tested technologies.</p>
-        </div>
-
-        <div class="flex flex-wrap justify-center gap-4">
-            @foreach($technologies as $tech)
-                <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-4 py-3 hover:shadow-md hover:border-gray-300 transition">
-                    @if($tech->icon)
-                        <img src="{{ Storage::url($tech->icon) }}" alt="{{ $tech->name }}" class="w-6 h-auto">
-                    @endif
-                    <span class="text-sm font-medium text-gray-700">{{ $tech->name }}</span>
-                </div>
-            @endforeach
-        </div>
-
-        <div class="text-center mt-8">
-            <a href="{{ route('technologies.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">View All Technologies &rarr;</a>
-        </div>
-    </div>
-</section>
-@endif
-
-{{-- 9. Latest Blog Posts --}}
+{{-- Latest posts ---------------------------------------------------------- --}}
 @if($latestPosts->isNotEmpty())
-<section class="py-20 bg-gray-50 border-t border-gray-100">
+<section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-end justify-between mb-10">
-            <div>
-                <p class="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Blog</p>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Latest Blog Posts</h2>
-                <p class="text-gray-500 mt-2">Insights, tutorials, and updates from our team.</p>
-            </div>
-            <a href="{{ route('blog.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium hidden sm:block">View All &rarr;</a>
+        <div class="text-center max-w-2xl mx-auto">
+            <p class="text-sm font-semibold uppercase tracking-wider text-blue-700">{{ __('home.blog.eyebrow') }}</p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-bold text-slate-900">{{ __('home.blog.title') }}</h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-5">
             @foreach($latestPosts as $post)
-                <a href="{{ route('blog.show', $post) }}" class="group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg hover:border-gray-300 transition">
-                    @if($post->featured_image)
-                        <div class="aspect-video bg-gray-100 overflow-hidden">
-                            <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        </div>
+                <a href="{{ route('blog.show', $post) }}" class="glass-card rounded-3xl p-6 block">
+                    <time class="text-xs text-slate-500" datetime="{{ $post->published_at?->toDateString() }}">
+                        {{ $post->published_at?->translatedFormat('j F Y') }}
+                    </time>
+                    <h3 class="mt-2 font-bold text-slate-900 leading-snug">{{ $post->title }}</h3>
+                    @if($post->excerpt)
+                        <p class="mt-2 text-sm text-slate-600 line-clamp-3">{{ $post->excerpt }}</p>
                     @endif
-                    <div class="p-5">
-                        <div class="text-xs text-gray-400 mb-2">{{ $post->published_at->format('M d, Y') }}</div>
-                        <h3 class="font-bold text-lg text-gray-900 group-hover:text-blue-600 transition">{{ $post->title }}</h3>
-                        @if($post->excerpt)
-                            <p class="text-gray-500 text-sm mt-2 line-clamp-2">{{ $post->excerpt }}</p>
-                        @endif
-                    </div>
                 </a>
             @endforeach
+        </div>
+
+        <div class="mt-10 text-center">
+            <a href="{{ route('blog.index') }}" class="glass-btn inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-slate-800">
+                {{ __('home.blog.cta') }}
+                <svg class="w-4 h-4 rtl-flip" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
         </div>
     </div>
 </section>
 @endif
 
-{{-- 10. CTA Section --}}
-<section class="py-20 border-t border-gray-100 bg-gradient-to-br from-blue-600 to-cyan-500">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-white">Ready to Start Your Project?</h2>
-        <p class="text-blue-100 mt-4 text-lg max-w-2xl mx-auto">Let's discuss how we can help bring your vision to life. Get in touch with us today.</p>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-            <a href="{{ route('contact') }}" class="bg-white hover:bg-gray-100 text-blue-600 px-8 py-3.5 rounded-xl font-semibold text-lg transition shadow-lg">
-                Contact Us
-            </a>
-            <a href="{{ route('projects.index') }}" class="bg-transparent border-2 border-white/50 hover:border-white text-white px-8 py-3.5 rounded-xl font-semibold text-lg transition">
-                View Projects
-            </a>
+{{-- Closing CTA ----------------------------------------------------------- --}}
+<section class="pb-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-strong rounded-3xl p-10 md:p-14 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900">{{ __('home.cta.title') }}</h2>
+            <p class="mt-4 text-slate-600 max-w-xl mx-auto leading-relaxed">{{ __('home.cta.body') }}</p>
+            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <a href="{{ route('contact') }}" class="glass-btn-primary w-full sm:w-auto px-7 py-3.5 rounded-full font-semibold">
+                    {{ __('home.cta.button') }}
+                </a>
+                <a href="{{ route('systems.index') }}" class="glass-btn w-full sm:w-auto px-7 py-3.5 rounded-full font-semibold text-slate-800">
+                    {{ __('home.cta.secondary') }}
+                </a>
+            </div>
         </div>
     </div>
 </section>
+
 @endsection

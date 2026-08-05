@@ -59,17 +59,20 @@ return [
     |--------------------------------------------------------------------------
     |
     | Drives the <html lang>/dir attributes, the hreflang alternates and the
-    | language switcher. PHASE 3 adds the 'ar' entry and the /{locale} route
-    | prefix; every consumer below already loops this list, so hreflang starts
-    | emitting reciprocal pairs the moment that entry appears.
+    | language switcher. Arabic is primary and is listed first.
     |
+
+    | Order matters: the first entry is the Accept-Language fallback when a
+    | visitor's browser asks for a language we do not publish.
     */
 
     'locales' => [
+        'ar' => ['name' => 'العربية', 'hreflang' => 'ar', 'dir' => 'rtl'],
         'en' => ['name' => 'English', 'hreflang' => 'en', 'dir' => 'ltr'],
     ],
 
-    // hreflang="x-default" target. PHASE 3 points this at the redirecting root.
-    'x_default_locale' => 'en',
+    // hreflang="x-default" points at the redirecting root, which is what
+    // Google recommends when "/" negotiates language rather than serving a page.
+    'x_default_locale' => null,
 
 ];

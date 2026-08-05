@@ -42,15 +42,19 @@ if (! function_exists('localized_url')) {
     {
         $route = request()->route();
 
-        if (! $route || ! $route->getName()) {
-            return url('/');
+        // Pages outside the locale group (login, admin) have no counterpart —
+        // send the switcher to that language's homepage rather than nowhere.
+        if (! $route || ! $route->getName() || ! array_key_exists('locale', $route->parameters())) {
+            return route('home', ['locale' => $locale]);
         }
 
-        if (! array_key_exists('locale', $route->parameters())) {
-            return url()->current();
-        }
+        $url = route($route->getName(), ['locale' => $locale] + $route->parameters());
 
-        return route($route->getName(), ['locale' => $locale] + $route->parameters());
+        // Preserve pagination so switching language does not drop you back to
+        // page 1 of a listing.
+        $page = request()->integer('page');
+
+        return $page > 1 ? $url.'?page='.$page : $url;
     }
 }
 

@@ -5,7 +5,7 @@
 @endsection
 
 @push('schema')
-    <x-schema.breadcrumbs :items="[['name' => __('nav.systems'), 'url' => route('systems.index')]]" />
+    <x-schema.breadcrumbs :items="[['name' => __('nav.products'), 'url' => route('systems.index')]]" />
 @endpush
 
 @section('content')

@@ -8,7 +8,7 @@
 
 @push('schema')
     <x-schema.breadcrumbs :items="[
-        ['name' => __('nav.systems'), 'url' => route('systems.index')],
+        ['name' => __('nav.products'), 'url' => route('systems.index')],
         ['name' => $system->title, 'url' => route('systems.show', $system)],
     ]" />
 @endpush

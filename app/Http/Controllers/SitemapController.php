@@ -17,7 +17,6 @@ class SitemapController extends Controller
         'blog.index' => ['weekly', '0.8'],
         'projects.index' => ['monthly', '0.8'],
         'systems.index' => ['monthly', '0.8'],
-        'technologies.index' => ['monthly', '0.5'],
         'contact' => ['yearly', '0.7'],
     ];
 

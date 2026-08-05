@@ -1,16 +1,20 @@
 <?php
 
-/*
-| Navigation, breadcrumb and shared UI labels.
-| PHASE 3 mirrors this file at lang/ar/nav.php and extracts the remaining
-| hardcoded strings from the Blade views into their own namespaces.
-*/
-
 return [
     'home' => 'Home',
+    'products' => 'Products',
+    'work' => 'Our Work',
     'blog' => 'Blog',
-    'projects' => 'Projects',
-    'technologies' => 'Technologies',
-    'systems' => 'Systems',
     'contact' => 'Contact',
+
+    // Shared UI
+    'cta' => 'Request a Quote',
+    'demo' => 'See the Demo',
+    'language' => 'العربية',
+    'menu' => 'Menu',
+    'quick_links' => 'Quick Links',
+    'get_in_touch' => 'Get in Touch',
+    'rights' => 'All rights reserved.',
+    'tagline' => 'The complete system for Omani fashion stores — online store, POS, and one unified inventory.',
+    'address' => 'Al Khoud, Muscat, Oman',
 ];

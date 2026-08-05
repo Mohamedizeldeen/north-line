@@ -71,7 +71,8 @@
     @foreach($locales as $code => $meta)
         <link rel="alternate" hreflang="{{ $meta['hreflang'] }}" href="{{ localized_url($code) }}">
     @endforeach
-    <link rel="alternate" hreflang="x-default" href="{{ localized_url(config('site.x_default_locale')) }}">
+    {{-- x-default is the negotiating root when no locale is pinned as default. --}}
+    <link rel="alternate" hreflang="x-default" href="{{ config('site.x_default_locale') ? localized_url(config('site.x_default_locale')) : url('/') }}">
 @endif
 
 <meta property="og:type" content="{{ $type }}">
