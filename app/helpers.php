@@ -97,6 +97,31 @@ if (! function_exists('localized_url')) {
     }
 }
 
+if (! function_exists('video_embed_url')) {
+    /**
+     * Convert a YouTube/Vimeo watch URL to its embeddable player URL.
+     *
+     * Returns null for anything it does not recognise — the caller then treats
+     * the URL as a direct video file for a native <video> element instead.
+     */
+    function video_embed_url(?string $url): ?string
+    {
+        if (! $url) {
+            return null;
+        }
+
+        if (preg_match('~(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([A-Za-z0-9_-]{11})~', $url, $m)) {
+            return 'https://www.youtube.com/embed/'.$m[1];
+        }
+
+        if (preg_match('~vimeo\.com/(?:video/)?(\d+)~', $url, $m)) {
+            return 'https://player.vimeo.com/video/'.$m[1];
+        }
+
+        return null;
+    }
+}
+
 if (! function_exists('site_dir')) {
     /**
      * Text direction for the active locale — drives <html dir="...">.

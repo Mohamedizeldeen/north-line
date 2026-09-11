@@ -3,95 +3,95 @@
 return [
 
     'hero' => [
-        'eyebrow' => 'Integrated systems for fashion retail · Muscat',
-        'title_lead' => 'Fashion Store Management',
-        'title_accent' => 'on One Inventory',
-        'title_tail' => 'in store and online',
-        'subtitle' => 'Your online store and your point of sale run on one system. Every piece comes off a single inventory the moment it sells — in the shop, on the store, or through Instagram.',
-        'cta_primary' => 'See the Demo',
-        'cta_secondary' => 'Request a Quote',
+        'eyebrow' => 'Digital transformation for businesses · Oman & the Gulf',
+        'title_lead' => 'We transform your business',
+        'title_accent' => 'digitally',
+        'title_tail' => 'from idea to operation',
+        'subtitle' => 'We assess your current systems, build the strategy with you, then execute: custom software, process automation, system integration, and cloud transformation — from a Muscat team serving Oman and the Gulf.',
+        'cta_primary' => 'Book a Free Consultation',
+        'cta_secondary' => 'Explore Our Services',
     ],
 
     'problem' => [
-        'eyebrow' => 'The problem',
-        'title' => 'If any of this sounds familiar, it is not your fault',
-        'subtitle' => 'These are the three things shop owners in Muscat tell us most often.',
+        'eyebrow' => 'The Challenge',
+        'title' => 'The problems we hear from almost every company',
+        'subtitle' => 'These are the three sentences we hear most from business owners in Oman.',
         'items' => [
             [
-                'quote' => 'We sold the same abaya twice',
-                'body' => 'One piece sold in the shop and online on the same day, because the two stocks are separate. You end up apologising to a customer and losing her.',
+                'quote' => 'Every department has its own system',
+                'body' => 'Sales run on one program, accounting on another, and stock lives in a spreadsheet. There is no single picture, and every report takes hours of copy-pasting.',
             ],
             [
-                'quote' => 'Orders get lost in Instagram messages',
-                'body' => 'The order arrives in one message, the size in another, the address in a third. By closing time you cannot tell what shipped and what did not.',
+                'quote' => 'The same steps get repeated by hand every day',
+                'body' => 'Same forms, same steps, same formatting — all redone manually instead of automatically. Time goes into work an employee repeats every single day.',
             ],
             [
-                'quote' => 'I do not know how many pieces are left',
-                'body' => 'Nothing tells you what sells and what sits. New orders get placed on instinct, and your cash stays locked in stock that never moves.',
+                'quote' => 'We do not have a report we trust',
+                'body' => 'Decisions get made on gut feeling, not data. When you need an exact number, you wait days for someone to compile it by hand.',
             ],
         ],
     ],
 
     'solution' => [
-        'eyebrow' => 'The system',
-        'title' => 'One system running the shop and the online store',
-        'subtitle' => 'Five ready-made systems, already built and running, made for fashion and abaya retail in Oman.',
+        'eyebrow' => 'The Solution',
+        'title' => 'From assessment to ongoing support — one team for all of it',
+        'subtitle' => "We cover every stage of your company's digital transformation, with one team that knows your project from day one.",
         'items' => [
             [
-                'name' => 'Online store',
-                'body' => 'A fully Arabic store built for phones, connected to Amwal Pay — licensed by the Central Bank of Oman. Customers order and pay themselves, no messages needed.',
+                'name' => 'Digital Assessment',
+                'body' => 'We review your current systems and processes and pinpoint exactly where the gaps are and what is worth digitizing first.',
             ],
             [
-                'name' => 'Virtual try-on',
-                'body' => 'She sees the piece on herself before ordering. Less hesitation before the sale, and fewer returns after it.',
+                'name' => 'Custom Software',
+                'body' => 'ERP, CRM, portals, and mobile apps built around exactly how your company works, not a ready-made template.',
             ],
             [
-                'name' => 'Point of sale',
-                'body' => 'A fast touch-screen till for the shop that prints the receipt and takes the piece out of stock in the same moment.',
+                'name' => 'Process Automation',
+                'body' => 'We replace spreadsheets, paper, and WhatsApp workflows with automated processes that run without repeated manual work.',
             ],
             [
-                'name' => 'Unified inventory',
-                'body' => 'One stock across every branch and the online store. Sell a piece in Al Khoud and it disappears from the store instantly — no double sale.',
+                'name' => 'System Integration',
+                'body' => 'We connect your ERP, CRM, payment gateways, website, and every other system together so they work as one.',
             ],
             [
-                'name' => 'Accounting',
-                'body' => 'Sales, expenses and profit in one place, ready for your VAT return without a single spreadsheet.',
+                'name' => 'Data & BI',
+                'body' => 'Centralized dashboards and reports that give you an accurate picture of your business at any moment, not at month end.',
             ],
             [
-                'name' => 'Email campaigns',
-                'body' => 'Bring past customers back with a group message when a new collection lands or the season sale starts.',
+                'name' => 'Ongoing Support',
+                'body' => 'Monitoring, optimization, and maintenance after launch, with a team that already knows your system as it grows.',
             ],
         ],
     ],
 
     'trust' => [
-        'title' => 'Not our first time',
+        'title' => 'This is not our first time',
         'items' => [
-            ['value' => '5+', 'label' => 'years in the Omani market'],
-            ['value' => '50+', 'label' => 'projects delivered'],
-            ['value' => '30+', 'label' => 'clients'],
-            ['value' => 'Amwal Pay', 'label' => 'licensed by the Central Bank of Oman'],
+            ['value' => '+5', 'label' => 'Years in the Omani market'],
+            ['value' => '+50', 'label' => 'Projects delivered'],
+            ['value' => '+30', 'label' => 'Clients'],
+            ['value' => '+11', 'label' => 'Integrated service areas'],
         ],
-        'note' => 'Our work includes the Muscat Fashion Week website.',
+        'note' => 'We work with companies across Oman and the Gulf in many sectors — from healthcare and education to real estate and retail.',
     ],
 
     'work' => [
-        'eyebrow' => 'Our work',
+        'eyebrow' => 'Our Work',
         'title' => 'Projects we have delivered',
-        'cta' => 'See all work',
+        'cta' => 'See all our work',
     ],
 
     'blog' => [
         'eyebrow' => 'Blog',
-        'title' => 'Questions shop owners ask',
+        'title' => 'Articles that help you understand digital transformation',
         'cta' => 'All articles',
     ],
 
     'cta' => [
-        'title' => 'Let us take a look at your shop',
-        'body' => 'Send us a message and we will walk you through the system — no commitment. We reply within 24 hours.',
-        'button' => 'Get in touch',
-        'secondary' => 'See the demo',
+        'title' => 'Ready to start your digital transformation?',
+        'body' => 'Send us a message and we will set up an initial assessment session — no obligation. We reply within 24 hours.',
+        'button' => 'Get in Touch',
+        'secondary' => 'Explore Our Services',
     ],
 
 ];

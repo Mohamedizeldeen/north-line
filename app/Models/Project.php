@@ -18,6 +18,8 @@ class Project extends Model
         'description',
         'content',
         'image',
+        'video_url',
+        'video_path',
         'client',
         'live_url',
         'technologies_used',

@@ -25,14 +25,24 @@
         <h1 class="mt-4 text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 text-balance">{{ $system->title }}</h1>
         <p class="mt-4 text-lg text-slate-600 leading-relaxed">{{ $system->description }}</p>
 
-        @if($system->demo_url)
-            <a href="{{ $system->demo_url }}" target="_blank" rel="noopener"
-               class="glass-btn-primary inline-block mt-6 px-6 py-3 rounded-full font-semibold">
-                {{ __('products.detail.demo') }}
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+            <a href="{{ route('quote', ['service' => $system->slug]) }}"
+               class="glass-btn-primary inline-block px-6 py-3 rounded-full font-semibold">
+                {{ __('products.detail.quote') }}
             </a>
-        @endif
+            @if($system->demo_url)
+                <a href="{{ $system->demo_url }}" target="_blank" rel="noopener"
+                   class="glass-btn inline-block px-6 py-3 rounded-full font-semibold text-slate-800">
+                    {{ __('products.detail.demo') }}
+                </a>
+            @endif
+        </div>
     </div>
 </section>
+
+<x-media-video :url="$system->video_url" :path="$system->video_path"
+               :poster="$system->image ? Storage::disk('public')->url($system->image) : null"
+               :title="$system->title" />
 
 @if($system->image)
     <section class="pb-8">

@@ -28,6 +28,8 @@ class ProjectController extends Controller
             'description' => 'required|string',
             'content' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
+            'video_url' => 'nullable|url|max:255',
+            'video_path' => 'nullable|mimetypes:video/mp4,video/webm|max:51200',
             'client' => 'nullable|string|max:255',
             'live_url' => 'nullable|url|max:255',
             'technologies_used' => 'nullable|string',
@@ -44,6 +46,10 @@ class ProjectController extends Controller
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('projects', 'public');
+        }
+
+        if ($request->hasFile('video_path')) {
+            $validated['video_path'] = $request->file('video_path')->store('projects', 'public');
         }
 
         Project::create($validated);
@@ -63,6 +69,8 @@ class ProjectController extends Controller
             'description' => 'required|string',
             'content' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
+            'video_url' => 'nullable|url|max:255',
+            'video_path' => 'nullable|mimetypes:video/mp4,video/webm|max:51200',
             'client' => 'nullable|string|max:255',
             'live_url' => 'nullable|url|max:255',
             'technologies_used' => 'nullable|string',
@@ -79,6 +87,10 @@ class ProjectController extends Controller
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('projects', 'public');
+        }
+
+        if ($request->hasFile('video_path')) {
+            $validated['video_path'] = $request->file('video_path')->store('projects', 'public');
         }
 
         $project->update($validated);

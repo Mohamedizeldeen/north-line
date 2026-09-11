@@ -28,16 +28,12 @@
 
         <h1 class="mt-2 text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 text-balance">{{ $project->title }}</h1>
         <p class="mt-4 text-lg text-slate-600 leading-relaxed">{{ $project->description }}</p>
-
-        @if($project->live_url)
-            <a href="{{ $project->live_url }}" target="_blank" rel="noopener"
-               class="glass-btn inline-flex items-center gap-2 mt-6 px-6 py-3 rounded-full font-semibold text-slate-800">
-                {{ __('work.visit') }}
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H18v4.5M18 6l-7 7M11 6H7a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1v-4"/></svg>
-            </a>
-        @endif
     </div>
 </section>
+
+<x-media-video :url="$project->video_url" :path="$project->video_path"
+               :poster="$project->image ? Storage::disk('public')->url($project->image) : null"
+               :title="$project->title" />
 
 @if($project->image)
     <section class="pb-8">

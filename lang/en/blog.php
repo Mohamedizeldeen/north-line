@@ -2,8 +2,8 @@
 
 return [
     'eyebrow' => 'Blog',
-    'title' => 'Questions shop owners ask',
-    'subtitle' => 'Straight answers on cost, tills, stock and payments — without the technical language.',
+    'title' => 'Articles and advice on digital transformation',
+    'subtitle' => 'Straight answers on systems, automation, and integration — without the complexity.',
     'empty' => [
         'title' => 'No articles yet',
         'body' => 'We are writing the first ones now. Check back soon.',

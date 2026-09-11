@@ -18,6 +18,8 @@ class System extends Model
         'description',
         'content',
         'image',
+        'video_url',
+        'video_path',
         'demo_url',
         'is_published',
         'sort_order',

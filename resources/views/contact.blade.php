@@ -5,7 +5,15 @@
     // JSON-LD both render from this array. Marking up a question that is not
     // visible on the page is a structured-data violation, so the two can never
     // be allowed to drift apart.
-    $faqs = __('contact.faqs');
+    //
+    // Admin-managed FAQs (the faqs table) win when present; otherwise the
+    // lang-file defaults are used — so a fresh database still renders a FAQ.
+    $faqs = \App\Models\Faq::inLocale()->published()->orderBy('sort_order')->get()
+        ->map(fn ($f) => ['question' => $f->question, 'answer' => $f->answer])->all();
+
+    if (empty($faqs)) {
+        $faqs = __('contact.faqs');
+    }
 @endphp
 
 @section('seo')

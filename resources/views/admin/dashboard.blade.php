@@ -4,7 +4,7 @@
 @section('content')
 <div class="space-y-6">
     {{-- Stats Grid --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
             <div class="text-sm text-gray-400">Blog Posts</div>
             <div class="text-2xl font-bold mt-1">{{ $stats['blog_posts'] }}</div>
@@ -14,16 +14,28 @@
             <div class="text-2xl font-bold mt-1">{{ $stats['projects'] }}</div>
         </div>
         <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
-            <div class="text-sm text-gray-400">Technologies</div>
-            <div class="text-2xl font-bold mt-1">{{ $stats['technologies'] }}</div>
-        </div>
-        <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
             <div class="text-sm text-gray-400">Systems</div>
             <div class="text-2xl font-bold mt-1">{{ $stats['systems'] }}</div>
         </div>
         <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
+            <div class="text-sm text-gray-400">Clients</div>
+            <div class="text-2xl font-bold mt-1">{{ $stats['clients'] }}</div>
+        </div>
+        <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
+            <div class="text-sm text-gray-400">Technologies</div>
+            <div class="text-2xl font-bold mt-1">{{ $stats['technologies'] }}</div>
+        </div>
+        <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
+            <div class="text-sm text-gray-400">Users</div>
+            <div class="text-2xl font-bold mt-1">{{ $stats['users'] }}</div>
+        </div>
+        <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
             <div class="text-sm text-gray-400">Unread Messages</div>
             <div class="text-2xl font-bold mt-1 {{ $stats['unread_messages'] > 0 ? 'text-red-400' : '' }}">{{ $stats['unread_messages'] }}</div>
+        </div>
+        <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
+            <div class="text-sm text-gray-400">Unread Quote Requests</div>
+            <div class="text-2xl font-bold mt-1 {{ $stats['unread_quotes'] > 0 ? 'text-red-400' : '' }}">{{ $stats['unread_quotes'] }}</div>
         </div>
     </div>
 
@@ -69,6 +81,27 @@
                 <p class="text-gray-500 text-sm">No messages yet.</p>
             @endforelse
         </div>
+    </div>
+
+    {{-- Recent Quote Requests --}}
+    <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold">Recent Quote Requests</h2>
+            <a href="{{ route('admin.quotes.index') }}" class="text-sm text-blue-400 hover:text-blue-300">View All</a>
+        </div>
+        @forelse($recentQuotes as $quote)
+            <div class="flex items-center justify-between py-3 border-b border-gray-800 last:border-0">
+                <div>
+                    <div class="font-medium text-sm {{ $quote->status === 'unread' ? 'text-white' : 'text-gray-400' }}">{{ $quote->name }}@if($quote->company) <span class="text-gray-500">· {{ $quote->company }}</span>@endif</div>
+                    <div class="text-xs text-gray-500">{{ $quote->service ?? 'General' }} — {{ $quote->created_at->diffForHumans() }}</div>
+                </div>
+                <span class="text-xs px-2 py-1 rounded-full {{ $quote->status === 'unread' ? 'bg-red-900/50 text-red-400' : 'bg-gray-800 text-gray-400' }}">
+                    {{ $quote->status }}
+                </span>
+            </div>
+        @empty
+            <p class="text-gray-500 text-sm">No quote requests yet.</p>
+        @endforelse
     </div>
 </div>
 @endsection

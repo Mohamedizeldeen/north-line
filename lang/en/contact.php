@@ -3,16 +3,16 @@
 return [
     'eyebrow' => 'Contact',
     'title' => 'Talk to North Line in Muscat',
-    'subtitle' => 'Tell us about your shop and we will walk you through the system. No commitment.',
+    'subtitle' => 'Tell us about your company, and we will set up an initial assessment session. No obligation.',
     'form' => [
         'name' => 'Name',
         'email' => 'Email',
         'subject' => 'Subject',
-        'subject_placeholder' => 'e.g. Enquiry about an online store',
+        'subject_placeholder' => 'e.g. Enquiry about digital transformation or a custom system',
         'message' => 'Your message',
-        'message_placeholder' => 'How many branches do you have? Do you sell online today?',
-        'submit' => 'Send message',
-        'required' => 'required',
+        'message_placeholder' => 'What is your biggest technical challenge right now? What systems do you currently use?',
+        'submit' => 'Send Message',
+        'required' => 'Required',
     ],
     'info' => [
         'email' => 'Email',
@@ -28,26 +28,26 @@ return [
     ],
     'faqs' => [
         [
-            'question' => 'How long does setup take?',
-            'answer' => 'Basic setup takes two to four weeks for a single shop, a little longer with more branches or a large collection. The longest part is usually entering products and photos, and we help with that. Payment gateway approval runs in parallel and takes three to ten business days.',
+            'question' => 'How long does a project take?',
+            'answer' => 'It depends on the size and scope. A focused project like automating one process takes two weeks to a month, while a broader one like integrating multiple systems or building a full custom system can take two to four months. We set a clear timeline after the first assessment session.',
         ],
         [
-            'question' => 'Can I start with just one part?',
-            'answer' => 'Yes. Most shops start with either the online store or the point of sale, then add the rest. The systems are built on one shared inventory from the start, so adding a piece later needs no rework and no moving data between systems.',
+            'question' => 'Can I start with just one area?',
+            'answer' => 'Yes. Most companies start with one area — automating a specific process or connecting two systems — then expand gradually. We build every solution so it can scale later without a rebuild from scratch.',
         ],
         [
-            'question' => 'What do I need to accept online payments?',
-            'answer' => 'You need a valid commercial registration and a VAT certificate. We submit the application to Amwal Pay, which is licensed by the Central Bank of Oman, and approval takes three to ten business days. We follow the application through with you until it is approved.',
+            'question' => 'Do you build on our existing systems or replace them entirely?',
+            'answer' => "We start by assessing your current systems. Sometimes the answer is connecting them and automating what's between them; sometimes only part needs replacing. The decision comes from the assessment, not an assumption.",
         ],
         [
-            'question' => 'Does it work across more than one branch?',
-            'answer' => 'Yes. Each branch has its own stock count, all under one inventory you see from a single place. You can see what is in each branch, move pieces between them, and have the online store sell from total stock or from one branch, whichever you choose.',
+            'question' => 'How do you handle our data security?',
+            'answer' => 'Cybersecurity and governance are built into every project, not added later. We apply clear access permissions, encrypt sensitive data, and document every security policy we build with you.',
         ],
         [
-            'question' => 'Are customer photos stored by the virtual try-on?',
-            'answer' => 'No. The photo is used for the moment the piece is shown and then deleted immediately. It is never stored on any server, never used to train any model, and never shared with anyone. We take this seriously because your customers take it seriously.',
+            'question' => 'What do I need to get started?',
+            'answer' => 'A free introductory session where we learn about your current situation and goals. After that we send you an initial assessment and a clear proposal with steps and an estimated cost, with no obligation on your side.',
         ],
     ],
 
-    'faq_title' => 'Frequently asked questions',
+    'faq_title' => 'Frequently Asked Questions',
 ];

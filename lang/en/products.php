@@ -1,29 +1,29 @@
 <?php
 
 return [
-    'eyebrow' => 'Products',
-    'title' => 'Our products — a complete system for a fashion store',
-    'subtitle' => 'Five systems that work together. Start with one and add the rest when you need them.',
+    'eyebrow' => 'Our Services',
+    'title' => 'Our Services — From Assessment to Ongoing Support',
+    'subtitle' => 'Eleven service areas covering the full digital transformation journey. Start with one and add the rest as you need them.',
 
     'empty' => [
-        'title' => 'No products listed yet',
-        'body' => 'We are preparing this page. Get in touch and we will walk you through it directly.',
+        'title' => 'No services listed yet',
+        'body' => 'We are preparing the services page. Get in touch and we will walk you through every area in detail.',
     ],
 
     'why' => [
-        'title' => 'Why our systems',
+        'title' => 'Why work with us',
         'items' => [
             [
-                'name' => 'Already built',
-                'body' => 'Not a project starting from zero. The systems are built and proven; setup focuses on your shop.',
+                'name' => 'One team for every stage',
+                'body' => 'From assessment and strategy to execution and support, one team knows your project from day one — no handoffs between vendors.',
             ],
             [
-                'name' => 'Fitted to your shop',
-                'body' => 'Sizes, colours, branches and how you number your stock — all set up the way you already work.',
+                'name' => 'Solutions built on your reality',
+                'body' => 'Every company has its own systems and processes. We build on how you actually work, not a ready-made template.',
             ],
             [
                 'name' => 'Local support',
-                'body' => 'Training for your team and ongoing support from Muscat, in Arabic, on Oman time.',
+                'body' => 'A team in Muscat, working in Arabic and English, on Oman time — before delivery and after.',
             ],
         ],
     ],
@@ -31,20 +31,21 @@ return [
     'detail' => [
         'what_you_get' => 'What you get',
         'includes' => [
-            'Full installation and setup',
-            'Configuration fitted to your shop',
-            'Training for your team',
-            'Ongoing technical support',
+            'An initial assessment of your current setup',
+            'A clear execution plan with phases and timelines',
+            'Implementation and training for your team',
+            'Ongoing technical support after launch',
         ],
-        'cta_title' => 'Interested in this system?',
-        'cta_body' => 'Get in touch for a walkthrough on your own shop — no commitment.',
-        'cta_button' => 'Get in touch',
-        'demo' => 'See the demo',
+        'cta_title' => 'Interested in this area?',
+        'cta_body' => 'Get in touch for an initial assessment of your situation, no obligation.',
+        'cta_button' => 'Get in Touch',
+        'demo' => 'See the Demo',
+        'quote' => 'Request a Quote',
     ],
 
     'cta' => [
         'title' => 'Need something different?',
-        'body' => 'If your shop works in its own particular way, we can fit the system to it. Tell us what you need.',
-        'button' => 'Get in touch',
+        'body' => 'If your company works differently, we can build around it. Tell us what you need.',
+        'button' => 'Get in Touch',
     ],
 ];

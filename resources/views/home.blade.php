@@ -23,7 +23,7 @@
                  two lines — the break lands between fragments, not inside one. --}}
             <h1 class="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 text-balance">
                 <span class="inline-block">{{ __('home.hero.title_lead') }}</span>
-                <span class="inline-block bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent">{{ __('home.hero.title_accent') }}</span>
+                <span class="inline-block text-blue-700">{{ __('home.hero.title_accent') }}</span>
                 <span class="block mt-1">{{ __('home.hero.title_tail') }}</span>
             </h1>
 
@@ -57,6 +57,26 @@
         </div>
     </div>
 </section>
+
+{{-- Partners of success --------------------------------------------------- --}}
+@if($clients->isNotEmpty())
+<section class="pb-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-sm font-semibold uppercase tracking-wider text-slate-500">{{ __('clients.strip_title') }}</p>
+        <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            @foreach($clients->take(12) as $client)
+                <x-client-logo :client="$client" class="h-20" />
+            @endforeach
+        </div>
+        <div class="mt-8 text-center">
+            <a href="{{ route('clients.index') }}" class="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-700 hover:text-blue-800">
+                {{ __('clients.eyebrow') }}
+                <svg class="w-4 h-4 rtl-flip" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+@endif
 
 {{-- Problem, in the customer's own words ---------------------------------- --}}
 <section class="py-20">

@@ -41,6 +41,8 @@
             @error('image') <p class="text-red-400 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
+        @include('admin.partials.video-fields', ['videoUrl' => old('video_url'), 'currentPath' => null])
+
         <div>
             <label class="block text-sm font-medium text-gray-300 mb-1">Sort Order</label>
             <input type="number" name="sort_order" value="{{ old('sort_order', 0) }}"

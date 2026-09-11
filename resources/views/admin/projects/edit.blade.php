@@ -57,6 +57,8 @@
                    class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-blue-600 file:text-white file:text-sm">
         </div>
 
+        @include('admin.partials.video-fields', ['videoUrl' => old('video_url', $project->video_url), 'currentPath' => $project->video_path])
+
         <div>
             <label class="block text-sm font-medium text-gray-300 mb-1">Sort Order</label>
             <input type="number" name="sort_order" value="{{ old('sort_order', $project->sort_order) }}"

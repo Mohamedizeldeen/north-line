@@ -1,171 +1,180 @@
-# North Line Development — Website Overhaul
+# North Line Development — Website
 
 ## About this project
 
 North Line Development is an Omani software company based in Al Khoud, Muscat.
-5+ years in business, 50+ projects, 30+ clients. Portfolio includes the
-Muscat Fashion Week website.
+5+ years in business, 50+ projects, 30+ clients across multiple sectors —
+healthcare, education, real estate, retail, and fashion (including the Muscat
+Fashion Week website) among others.
 
-We are repositioning from a generalist dev shop to a **vertical specialist**:
-integrated systems for fashion retail in Oman.
+North Line is a **full-service digital transformation consultancy** for
+businesses in **Oman and the wider Gulf (GCC)**: we take a company from a
+digital assessment through strategy, custom software, automation, integration,
+and ongoing support — one team for every stage, not a single point product.
+Muscat is home base; the audience is regional.
 
 ### Positioning
 
-- **AR:** النظام الكامل لمحل الأزياء في عُمان — متجر إلكتروني، نقطة بيع، ومخزون واحد
-- **EN:** The complete system for Omani fashion stores — online store, POS, and one unified inventory.
+- **AR:** من التقييم الرقمي إلى الدعم المستمر — شريكك الكامل للتحول الرقمي في عُمان ودول الخليج
+- **EN:** From digital assessment to ongoing support — your complete digital transformation partner in Oman and the Gulf.
 
-### Product stack (all already built)
+### Service areas (all offered — seeded in `database/seeders/ServiceSeeder.php`)
 
-- E-commerce store with AI virtual try-on
-- POS with unified inventory across store and online
-- Amwal Pay integration (Omani gateway, licensed by the Central Bank of Oman)
-- Email marketing integration
-- Accounting system
+| Area | What we provide |
+| --- | --- |
+| Digital Assessment | Analyze current systems, processes, problems, and gaps |
+| Strategy & Roadmap | Decide what should be digitized and in what order |
+| Custom Software | ERP, CRM, portals, mobile apps, internal systems |
+| Process Automation | Replace Excel, paper, WhatsApp/manual workflows with automated processes |
+| System Integration | Connect ERP, CRM, payment gateways, websites, APIs, etc. |
+| Cloud Transformation | Move systems/infrastructure to cloud and modernize architecture |
+| Data & BI | Dashboards, reports, analytics, centralized data |
+| AI & Automation | AI assistants, document processing, intelligent workflows, RAG, forecasting |
+| Cybersecurity & Governance | Security assessment, access control, policies, compliance |
+| Training & Change Management | Train employees and help them adopt the new systems |
+| Ongoing Support | Monitoring, optimization, maintenance and further transformation |
 
 ### Target customer
 
-Fashion and abaya boutiques in Muscat, 1–3 branches, who also sell through
-Instagram DMs. The decision maker is the owner. She is non-technical and buys
-in **Arabic**.
+Businesses across Oman and the Gulf (GCC) — small and mid-size companies in
+many sectors — that need to digitize or modernize how they operate. The
+decision maker is typically a business owner, operations manager, or IT lead.
+She or he buys primarily in **Arabic**, though many decision-makers are
+comfortable in English too. Keep the copy Gulf-wide (عُمان ودول الخليج), with
+Muscat as the stated home base rather than the whole market.
 
 ### Core pain we solve
 
-Double inventory (the same item sold in-store *and* online), orders lost in
-Instagram DMs, no reporting.
+Disconnected systems and data silos (every department on its own tool),
+manual processes running on Excel/paper/WhatsApp instead of automation, and
+no centralized reporting or real-time visibility into the business.
 
 ## Hard constraints
 
 - **Arabic is the PRIMARY language**, English is secondary.
 - Proper **RTL** support throughout.
-- Copy targets **shop owners, NOT developers** — zero technical jargon.
-  Never say Laravel, API, framework, or stack in customer-facing copy.
-- **Mobile-first**: most traffic arrives from Instagram.
+- Copy targets **business decision-makers, not developers** — avoid
+  engineering/implementation jargon (Laravel, API, framework, stack,
+  endpoint) in customer-facing copy. Business/service terms (ERP, CRM,
+  cloud, cybersecurity, automation) are fine — they are the actual named
+  services this company sells.
+- **Mobile-first**: a meaningful share of traffic arrives from mobile and
+  from social channels.
 
 ## Arabic SEO targets
 
-- نظام إدارة محل ملابس
-- برنامج كاشير للأزياء عمان
-- متجر إلكتروني للعبايات
-- تجربة قياس افتراضية
-- كم تكلفة متجر إلكتروني في عمان
-- برنامج محاسبي عماني
+- برنامج تحول رقمي عمان
+- أنظمة ERP للشركات العمانية
+- أتمتة العمليات
+- تكامل الأنظمة
+- حلول ذكاء اصطناعي للشركات
+- شركة برمجيات في مسقط
+
+## Site status
+
+The Arabic-primary bilingual foundation is built and tested
+(`tests/Feature/SeoTest.php`): `/ar/` and `/en/` routing, root negotiation by
+`Accept-Language` defaulting to Arabic, full RTL (`dir="rtl"`, mirrored
+spacing, flipped directional icons), reciprocal self-referencing hreflang
+with `x-default`, per-page canonical, per-page SEO titles/descriptions
+(60 / 150–160 chars), and JSON-LD (`Organization` sitewide, `LocalBusiness`
+on the homepage, `FAQPage` on contact, `BreadcrumbList` on inner pages).
+`robots.txt` allows GPTBot, ClaudeBot, PerplexityBot, and Google-Extended;
+`sitemap.xml` covers every published page.
+
+Content architecture: translated content lives in `lang/ar/*.php` and
+`lang/en/*.php` (one file per page/section); the services catalog lives in
+the `System` model (bilingual rows paired by `translation_group_id`, seeded
+by `database/seeders/ServiceSeeder.php`), rendered at `/ar/systems` and
+`/en/systems` (nav label "خدماتنا" / "Services"). The `Project` portfolio and
+blog posts are DB-driven the same way.
+
+Additional admin-managed content (all editable under `/admin`):
+
+- **Clients / "partners of success"** — the `Client` model (non-translated:
+  name, logo, url, sort_order, is_published). Shown as a homepage strip and a
+  standalone `/{locale}/clients` page. Logos render inside always-white tiles
+  (`<x-client-logo>`) so any brand colour stays legible on both themes.
+- **Videos on projects & systems** — each has `video_url` (external
+  YouTube/Vimeo/direct link) and `video_path` (uploaded MP4/WebM on the public
+  disk). Rendered by `<x-media-video>`, which prefers the uploaded file, else
+  embeds via the `video_embed_url()` helper (`app/helpers.php`), else a native
+  `<video>`. Project pages intentionally show **no external "visit" link** —
+  cover image + video only.
+- **Quote requests** — the `QuoteRequest` model + `/{locale}/quote` form
+  (name/company/email/phone/service/message), saved and shown in `/admin`
+  exactly like contact messages (unread badge, dashboard count). The nav CTA
+  ("اطلب عرضاً") and each service page's "اطلب عرض السعر" button point here.
+  There is deliberately no public pricing page with numbers.
+
+## Design system
+
+The look is a **premium dark theme by default** (deep near-black ground, a
+controlled brand-hued aurora glow + faint grid behind the hero, vivid blue
+accent, real depth) — inspired by laravel.com/cloud, **not** glassmorphism.
+Do not reintroduce frosted-glass/`backdrop-filter` surfaces or pastel
+gradient blobs; they read as generic AI output and were explicitly rejected.
+
+- **Everything is centralized in `resources/css/app.css`.** Surfaces use
+  token-driven `@utility glass-*` classes (the name is legacy — they are
+  solid, not frosted). Light is the CSS base; the dark theme is one block of
+  token overrides under `[data-theme="dark"]`, plus remaps of the exact
+  `text-slate-*` / `text-blue-*` / `bg-white/*` utilities the templates use,
+  so pages need no per-element colour edits.
+- **Theme switching:** a no-flash inline script in `layouts/app.blade.php`
+  sets `data-theme` on `<html>` before first paint (**defaults to dark**);
+  the nav toggle persists the choice in `localStorage`. The script sets the
+  attribute client-side only — the server-rendered `<html>` tag stays exactly
+  `<html lang=".." dir="..">`, which `SeoTest` asserts verbatim, so never add
+  theme attributes to the `<html>` tag in Blade.
+- When adding a new coloured utility to a template, add its dark remap to the
+  `[data-theme="dark"]` block, or it will be unreadable on the dark ground.
+- The wordmark PNG is black-on-transparent; `.site-logo` is inverted to white
+  in dark mode.
+
+## Admin panel
+
+`/admin` (gated by `AdminMiddleware` + `User.is_admin`) is the single control
+surface and uses an **Apple-style Liquid Glass** design — frosted translucent
+chrome over a vibrant aurora backdrop. This look is **admin-only**: it is CSS
+scoped to the `.admin-shell` body class in `resources/css/app.css`, which remaps
+the admin views' Tailwind gray utilities into glass (so admin view markup did
+not change). The public site's dark theme is entirely separate.
+
+Beyond the content CRUD (blog, projects, systems, clients, technologies,
+contacts, quotes), the admin manages:
+
+- **Users** — `Admin\UserController` CRUD; guards stop an admin deleting or
+  demoting their own account.
+- **Site settings** — the `settings` table (key/value) overlays `config('site.*')`
+  in `AppServiceProvider::boot()` (contact email/phone/address + social). Existing
+  `config('site.*')` calls pick up edits with no code change. `config/site.php`
+  stays as the defaults. The overlay runs per request (each real request is a
+  fresh boot), so it works even with `config:cache`.
+- **FAQs** — the `faqs` table + `Admin\FaqController`; the contact page uses DB
+  FAQs when present and **falls back to `lang/**/contact.php`** when the table is
+  empty (this keeps `SeoTest`'s FAQ assertion green on the fresh test DB).
+- **Page content & SEO** — `Admin\ContentController` edits any `lang/**` string
+  in either language via the `translations` table, overlaid at runtime by
+  `app/Translation/DatabaseTranslationLoader.php` (registered in
+  `AppServiceProvider::register()` by decorating `translation.loader`). No `__()`
+  call changed. The loader falls back to file values if the table is missing or a
+  query fails. Clearing a field in the editor restores the file default.
+
+**Gotchas for future work here:**
+- Never name a route parameter `locale` — the global `SetLocale` middleware
+  forgets it. The content routes use `{lang}` for this reason.
+- Anything moved from `lang/**` or `config/site.php` into the DB must keep the
+  file/config value as the fallback, or the no-seed test DB will fail.
+- The `Setting`/`Translation` models cache their reads (`Cache::rememberForever`)
+  and flush on save — clear those caches if you write rows directly.
 
 ## Working agreement
 
-Work the phases **in order**. After each phase: stop, summarize what changed,
-and wait for approval before continuing. Commit after each approved phase so
-there are rollback points.
-
-## Phases
-
-### PHASE 1 — Audit (change nothing)
-
-Report on:
-
-1. Framework, version, how routes/pages are defined
-2. How page metadata (title, meta description, OG tags) is currently set
-3. Whether any i18n library is installed
-4. Whether robots.txt and sitemap.xml exist, and how the sitemap is generated
-5. Any existing JSON-LD / structured data
-6. CSS approach and whether it has any RTL support
-7. Where blog posts live and how they render
-
-Then recommend an approach for adding Arabic as the primary language.
-Modify nothing in this phase.
-
-### PHASE 2 — SEO foundation
-
-1. The homepage title is currently "Home - North Line Development" — this
-   wastes the most valuable SEO field on the site. Rewrite every page title to
-   be descriptive and keyword-targeted, including "عُمان"/"Oman" where natural.
-   Max 60 characters.
-2. Unique meta description per page, 150–160 chars, with a value proposition
-   and location signal.
-3. Exactly one H1 per page, containing the target keyword.
-4. Add JSON-LD: Organization sitewide, LocalBusiness on homepage and contact
-   (Al Khoud, Muscat, Oman), FAQPage wherever FAQs exist, BreadcrumbList on
-   inner pages.
-5. Verify robots.txt does **not** block GPTBot, ClaudeBot, PerplexityBot, or
-   Google-Extended — we want AI assistants to be able to cite us.
-6. Ensure sitemap.xml covers every indexable page and is referenced in
-   robots.txt.
-
-### PHASE 3 — Arabic version (highest impact — be careful here)
-
-- URLs: `/ar/` and `/en/`. Root redirects by Accept-Language, defaulting to Arabic.
-- Full RTL: `dir="rtl"`, mirrored spacing, flipped directional icons and arrows,
-  correct text alignment.
-- Arabic webfont with good performance (IBM Plex Sans Arabic, Tajawal, or
-  Noto Sans Arabic).
-
-**hreflang — the easiest thing to get wrong, so verify it:**
-
-- Self-referencing hreflang on every page
-- Reciprocal: ar → en **and** en → ar (if not reciprocal, Google ignores both)
-- Include `x-default`
-- Each page's canonical points to **itself**, never cross-language. Never make
-  the Arabic page canonical to the English one — that de-indexes Arabic entirely.
-
-Translate **all** content, not just navigation. UI-only translation with English
-body text produces duplicate pages that rank for nothing.
-
-Add a language switcher that preserves the current path.
-
-After this phase, show the rendered `<head>` of two matching pages for manual
-hreflang verification.
-
-### PHASE 4 — Fashion landing page at `/ar/fashion` and `/en/fashion`
-
-1. **Hero** — outcome headline, not product name. Lead with the unified
-   inventory promise. Primary CTA "شاهد الديمو" to the live demo.
-2. **Problem section** in the customer's own words:
-   "بعنا نفس العباية مرتين" · "الطلبات تضيع بين رسائل الإنستقرام" ·
-   "ما أعرف كم قطعة باقية"
-3. **Four solution blocks**: متجر إلكتروني / تجربة قياس افتراضية / نقطة بيع /
-   مخزون موحّد
-4. **Comparison table** vs Salla, Zid, and a standalone cashier system — show
-   what only we do (POS + online + unified inventory + try-on)
-5. **Trust signals**: 5 years, 50+ projects, Muscat Fashion Week, Amwal Pay
-   licensed by the Central Bank of Oman
-6. **FAQ block**, answers 40–60 words each, phrased as direct answers so AI
-   assistants can quote them. Must include:
-   - "ليش ما أستخدم سلّة؟"
-   - "هل تُخزَّن صور العميلات؟" → deleted immediately, never stored, never used
-     for training
-   - "كم يستغرق التجهيز؟"
-7. **Final CTA**: WhatsApp link, not a contact form.
-
-Add an "آخر تحديث" date — AI search engines weight freshness heavily.
-
-### PHASE 5 — Pricing page at `/ar/pricing` and `/en/pricing`
-
-Real numbers as plain crawlable text. Not images, not "contact us."
-
-Three tiers, middle one marked recommended:
-
-| Tier | Setup | Monthly |
-| --- | --- | --- |
-| أونلاين | 800 OMR | 45 OMR |
-| متكامل (recommended) | 1800 OMR | 90 OMR |
-| متعدد الفروع | 3000 OMR | 150 OMR |
-
-Include a what's-included vs what-costs-extra table, and a note that payment
-gateway approval requires a CR and VAT certificate and takes 3–10 business days.
-Add FAQPage JSON-LD.
-
-Plain text matters because AI agents recommending vendors cannot read "contact
-us for pricing" — with no number, they recommend the competitor who published one.
-
-### PHASE 6 — Blog realignment
-
-Existing posts are developer-facing (e.g. "why we use Laravel"). Developers
-don't buy from us. Restructure the blog for Arabic commercial-intent content and
-create stubs with proper metadata and internal links for:
-
-- كم تكلفة متجر إلكتروني في عُمان؟
-- أفضل نظام كاشير لمحلات الأزياء في عُمان
-- متجر إلكتروني مقابل سلّة: أيهما يناسب محلك؟
-- كيف تربط أموال باي بمتجرك الإلكتروني
-- متى تحتاج محلك نظاماً محاسبياً بدل Excel؟
-
-Keep existing posts but move them to a technical section, out of the main blog feed.
+For any change that touches more than a couple of files or shifts
+messaging/positioning, propose an approach and wait for approval before
+implementing. Commit at logical checkpoints so there are rollback points.
+After a content or positioning change, verify against
+`tests/Feature/SeoTest.php` and spot-check the rendered `<head>` of a couple
+of matching `/ar/*` and `/en/*` pages for hreflang correctness before calling
+it done.
