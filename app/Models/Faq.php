@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasLocale;
 use Illuminate\Database\Eloquent\Model;
 
 class Faq extends Model
 {
+    use HasLocale;
+
     protected $fillable = [
         'locale',
+        'translation_group_id',
         'question',
         'answer',
         'sort_order',
@@ -24,10 +28,5 @@ class Faq extends Model
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
-    }
-
-    public function scopeInLocale($query, ?string $locale = null)
-    {
-        return $query->where('locale', $locale ?? app()->getLocale());
     }
 }

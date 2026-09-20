@@ -38,9 +38,12 @@
         <x-seo />
     @endif
 
-    {{-- Self-hosted. Preload only the weight used by above-the-fold copy. --}}
-    <link rel="preload" href="{{ asset('fonts/ibm-plex-sans-arabic-400.woff2') }}" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="{{ asset('fonts/ibm-plex-sans-arabic-700.woff2') }}" as="font" type="font/woff2" crossorigin>
+    {{-- Self-hosted. Preload only the weight used by above-the-fold copy.
+         Vite::asset() resolves to the dev server in local dev and to the
+         fingerprinted /build/assets/ path in production — the fonts are
+         Vite-managed assets (resources/fonts/), not public/ files. --}}
+    <link rel="preload" href="{{ \Illuminate\Support\Facades\Vite::asset('resources/fonts/ibm-plex-sans-arabic-400.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ \Illuminate\Support\Facades\Vite::asset('resources/fonts/ibm-plex-sans-arabic-700.woff2') }}" as="font" type="font/woff2" crossorigin>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 

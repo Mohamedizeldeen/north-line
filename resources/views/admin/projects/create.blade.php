@@ -2,30 +2,21 @@
 @section('page-title', 'Create Project')
 
 @section('content')
-<div class="max-w-3xl">
+<div class="max-w-5xl">
     <h2 class="text-xl font-bold mb-6">Create New Project</h2>
 
     <form method="POST" action="{{ route('admin.projects.store') }}" enctype="multipart/form-data" class="space-y-5">
         @csrf
-        <div>
-            <label class="block text-sm font-medium text-gray-300 mb-1">Title</label>
-            <input type="text" name="title" value="{{ old('title') }}" required
-                   class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-            @error('title') <p class="text-red-400 text-sm mt-1">{{ $message }}</p> @enderror
-        </div>
 
-        <div>
-            <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
-            <textarea name="description" rows="3" required
-                      class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">{{ old('description') }}</textarea>
-            @error('description') <p class="text-red-400 text-sm mt-1">{{ $message }}</p> @enderror
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium text-gray-300 mb-1">Detailed Content</label>
-            <textarea name="content" rows="8"
-                      class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">{{ old('content') }}</textarea>
-        </div>
+        @include('admin.partials.bilingual-fields', [
+            'ar' => null,
+            'en' => null,
+            'fields' => [
+                ['key' => 'title', 'label' => 'Title'],
+                ['key' => 'description', 'label' => 'Description', 'type' => 'textarea', 'rows' => 3],
+                ['key' => 'content', 'label' => 'Detailed Content', 'type' => 'textarea', 'rows' => 8],
+            ],
+        ])
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>

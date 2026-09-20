@@ -72,4 +72,22 @@ trait HasLocale
             ->pluck('locale')
             ->all();
     }
+
+    /**
+     * Links this row and $other as translations of each other by giving
+     * them a shared translation_group_id (reusing either side's existing
+     * group id, or starting a new one from this row's own id).
+     */
+    public function pairWith(Model $other): void
+    {
+        $groupId = $this->translation_group_id ?? $other->translation_group_id ?? $this->id;
+
+        if ($this->translation_group_id !== $groupId) {
+            $this->forceFill(['translation_group_id' => $groupId])->save();
+        }
+
+        if ($other->translation_group_id !== $groupId) {
+            $other->forceFill(['translation_group_id' => $groupId])->save();
+        }
+    }
 }
