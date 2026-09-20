@@ -12,6 +12,7 @@ class TechnologyController extends Controller
     public function index()
     {
         $technologies = Technology::orderBy('sort_order')->orderBy('name')->paginate(20);
+
         return view('admin.technologies.index', compact('technologies'));
     }
 
@@ -70,6 +71,7 @@ class TechnologyController extends Controller
     public function destroy(Technology $technology)
     {
         $technology->delete();
+
         return redirect()->route('admin.technologies.index')->with('success', 'Technology deleted successfully.');
     }
 }

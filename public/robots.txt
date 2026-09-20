@@ -1,2 +1,15 @@
+# North Line Development — https://northline-dev.com
+#
+# AI assistants are deliberately ALLOWED. GPTBot, ClaudeBot, Claude-User,
+# Claude-SearchBot, PerplexityBot, Google-Extended and CCBot are all covered by
+# the wildcard group below and are not restricted. They are intentionally NOT
+# given their own named groups: a named group fully replaces the wildcard group
+# for that crawler, which would silently opt it out of the Disallow rules here.
+# To keep a specific AI crawler out, add a named group for it below.
+
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /login
+Allow: /
+
+Sitemap: https://northline-dev.com/sitemap.xml

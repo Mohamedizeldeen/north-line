@@ -1,46 +1,107 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogPostController as AdminBlogPostController;
+use App\Http\Controllers\Admin\ClientController as AdminClientController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
+use App\Http\Controllers\Admin\ContentController as AdminContentController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
+use App\Http\Controllers\Admin\QuoteController as AdminQuoteController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
+use App\Http\Controllers\Admin\SystemController as AdminSystemController;
+use App\Http\Controllers\Admin\TechnologyController as AdminTechnologyController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SystemController;
-use App\Http\Controllers\TechnologyController;
-use App\Http\Controllers\Admin\BlogPostController as AdminBlogPostController;
-use App\Http\Controllers\Admin\ContactController as AdminContactController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
-use App\Http\Controllers\Admin\SystemController as AdminSystemController;
-use App\Http\Controllers\Admin\TechnologyController as AdminTechnologyController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Public Routes
+| Language negotiation
 |--------------------------------------------------------------------------
+|
+| "/" serves no content — it negotiates. Arabic is listed first in
+| config('site.locales'), so it is what a browser gets when it asks for
+| anything we do not publish. A 302 (not 301) because the answer depends on
+| the visitor, and a permanent redirect would pin the first answer in caches
+| and in Google's index for everyone.
+|
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', function (Request $request) {
+    $locales = array_keys(config('site.locales'));
 
-// Blog
-Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{post}', [BlogController::class, 'show'])->name('blog.show');
+    return redirect()->to('/'.($request->getPreferredLanguage($locales) ?: config('app.locale')));
+})->name('root');
 
-// Projects
-Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
-Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+// Not localized: one sitemap lists both language trees.
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
-// Technologies
-Route::get('/technologies', [TechnologyController::class, 'index'])->name('technologies.index');
+/*
+|--------------------------------------------------------------------------
+| Public routes (/ar/... and /en/...)
+|--------------------------------------------------------------------------
+|
+| The {locale} prefix plus URL::defaults() in SetLocale means route('blog.index')
+| keeps working everywhere and resolves to the language of the current page.
+|
+*/
 
-// Systems
-Route::get('/systems', [SystemController::class, 'index'])->name('systems.index');
-Route::get('/systems/{system}', [SystemController::class, 'show'])->name('systems.show');
+Route::prefix('{locale}')->whereIn('locale', array_keys(config('site.locales')))->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Contact
-Route::get('/contact', [ContactController::class, 'show'])->name('contact');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+    // Blog
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/{post}', [BlogController::class, 'show'])->name('blog.show');
+
+    // Projects
+    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+    Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+
+    // Systems
+    Route::get('/systems', [SystemController::class, 'index'])->name('systems.index');
+    Route::get('/systems/{system}', [SystemController::class, 'show'])->name('systems.show');
+
+    // Clients
+    Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
+
+    // Quote request (contact us for the price)
+    Route::get('/quote', [QuoteController::class, 'show'])->name('quote');
+    Route::post('/quote', [QuoteController::class, 'store'])->name('quote.store');
+
+    // Contact
+    Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+});
+
+/*
+| The Technologies page listed frameworks and tooling — developer jargon that
+| the audience explicitly does not buy on. Removed from the site; the URL is
+| kept as a permanent redirect so existing links and any accrued ranking
+| signal land on the homepage instead of a 404.
+*/
+Route::permanentRedirect('/technologies', '/');
+Route::permanentRedirect('/{locale}/technologies', '/')->whereIn('locale', array_keys(config('site.locales')));
+
+/*
+| The site was previously unprefixed (/blog, /contact, ...). Those URLs may be
+| indexed or linked, so they move permanently into the primary language rather
+| than 404ing.
+*/
+foreach (['blog', 'projects', 'systems', 'clients', 'quote', 'contact'] as $path) {
+    Route::permanentRedirect("/{$path}", '/'.config('app.locale')."/{$path}");
+    Route::permanentRedirect("/{$path}/{rest}", '/'.config('app.locale')."/{$path}/{rest}")
+        ->where('rest', '.*');
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -76,8 +137,31 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
     // Systems CRUD
     Route::resource('systems', AdminSystemController::class)->except(['show']);
 
+    // Clients CRUD
+    Route::resource('clients', AdminClientController::class)->except(['show']);
+
     // Contact Messages
     Route::get('contacts', [AdminContactController::class, 'index'])->name('contacts.index');
     Route::get('contacts/{contact}', [AdminContactController::class, 'show'])->name('contacts.show');
     Route::delete('contacts/{contact}', [AdminContactController::class, 'destroy'])->name('contacts.destroy');
+
+    // Quote Requests
+    Route::get('quotes', [AdminQuoteController::class, 'index'])->name('quotes.index');
+    Route::get('quotes/{quote}', [AdminQuoteController::class, 'show'])->name('quotes.show');
+    Route::delete('quotes/{quote}', [AdminQuoteController::class, 'destroy'])->name('quotes.destroy');
+
+    // FAQs CRUD
+    Route::resource('faqs', AdminFaqController::class)->except(['show']);
+
+    // Users CRUD
+    Route::resource('users', AdminUserController::class)->except(['show']);
+
+    // Page content & SEO editor ({lang}, not {locale}: SetLocale strips a param named "locale")
+    Route::get('content', [AdminContentController::class, 'index'])->name('content.index');
+    Route::get('content/{lang}/{group}', [AdminContentController::class, 'edit'])->name('content.edit');
+    Route::put('content/{lang}/{group}', [AdminContentController::class, 'update'])->name('content.update');
+
+    // Site settings
+    Route::get('settings', [AdminSettingController::class, 'edit'])->name('settings.edit');
+    Route::put('settings', [AdminSettingController::class, 'update'])->name('settings.update');
 });

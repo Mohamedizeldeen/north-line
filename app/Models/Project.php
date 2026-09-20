@@ -2,19 +2,24 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasLocale;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, HasLocale;
 
     protected $fillable = [
+        'translation_group_id',
+        'locale',
         'title',
         'slug',
         'description',
         'content',
         'image',
+        'video_url',
+        'video_path',
         'client',
         'live_url',
         'technologies_used',

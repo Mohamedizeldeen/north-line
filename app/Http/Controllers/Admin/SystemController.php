@@ -12,6 +12,7 @@ class SystemController extends Controller
     public function index()
     {
         $systems = System::orderBy('sort_order')->latest()->paginate(15);
+
         return view('admin.systems.index', compact('systems'));
     }
 
@@ -27,6 +28,8 @@ class SystemController extends Controller
             'description' => 'required|string',
             'content' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
+            'video_url' => 'nullable|url|max:255',
+            'video_path' => 'nullable|mimetypes:video/mp4,video/webm|max:51200',
             'demo_url' => 'nullable|url|max:255',
             'is_published' => 'boolean',
             'sort_order' => 'integer',
@@ -36,6 +39,10 @@ class SystemController extends Controller
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('systems', 'public');
+        }
+
+        if ($request->hasFile('video_path')) {
+            $validated['video_path'] = $request->file('video_path')->store('systems', 'public');
         }
 
         System::create($validated);
@@ -55,6 +62,8 @@ class SystemController extends Controller
             'description' => 'required|string',
             'content' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
+            'video_url' => 'nullable|url|max:255',
+            'video_path' => 'nullable|mimetypes:video/mp4,video/webm|max:51200',
             'demo_url' => 'nullable|url|max:255',
             'is_published' => 'boolean',
             'sort_order' => 'integer',
@@ -66,6 +75,10 @@ class SystemController extends Controller
             $validated['image'] = $request->file('image')->store('systems', 'public');
         }
 
+        if ($request->hasFile('video_path')) {
+            $validated['video_path'] = $request->file('video_path')->store('systems', 'public');
+        }
+
         $system->update($validated);
 
         return redirect()->route('admin.systems.index')->with('success', 'System updated successfully.');
@@ -74,6 +87,7 @@ class SystemController extends Controller
     public function destroy(System $system)
     {
         $system->delete();
+
         return redirect()->route('admin.systems.index')->with('success', 'System deleted successfully.');
     }
 }

@@ -8,13 +8,14 @@ class SystemController extends Controller
 {
     public function index()
     {
-        $systems = System::published()->orderBy('sort_order')->get();
+        $systems = System::inLocale()->published()->orderBy('sort_order')->get();
+
         return view('systems.index', compact('systems'));
     }
 
     public function show(System $system)
     {
-        if (!$system->is_published) {
+        if (! $system->is_published) {
             abort(404);
         }
 

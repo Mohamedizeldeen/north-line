@@ -1,83 +1,100 @@
 @extends('layouts.app')
-@section('title', $post->title)
-@section('meta_description', $post->excerpt ?? Str::limit(strip_tags($post->content), 160))
+
+@section('seo')
+    <x-seo :title="$post->title"
+           :description="meta_description($post->excerpt, $post->content)"
+           :image="$post->featured_image"
+           type="article"
+           :published-at="$post->published_at"
+           :modified-at="$post->updated_at" />
+@endsection
+
+@push('schema')
+    <x-schema.blog-posting :post="$post" />
+    <x-schema.breadcrumbs :items="[
+        ['name' => __('nav.blog'), 'url' => route('blog.index')],
+        ['name' => $post->title, 'url' => route('blog.show', $post)],
+    ]" />
+@endpush
 
 @section('content')
-{{-- 1. Article Header --}}
-<section class="bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-12 md:py-16">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <a href="{{ route('blog.index') }}" class="text-sm text-blue-600 hover:text-blue-700 transition mb-4 inline-flex items-center gap-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-            Back to Blog
-        </a>
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-gray-900 mt-4">{{ $post->title }}</h1>
-        <div class="flex items-center gap-3 mt-4 text-sm text-gray-500">
-            @if($post->author)
-                <span>By {{ $post->author->name }}</span>
-                <span>&middot;</span>
-            @endif
-            <time>{{ $post->published_at->format('F d, Y') }}</time>
-        </div>
-    </div>
-</section>
 
-{{-- 2. Featured Image --}}
-@if($post->featured_image)
-<section class="pb-4">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="rounded-2xl overflow-hidden shadow-lg">
-            <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}" class="w-full">
-        </div>
-    </div>
-</section>
-@endif
+<article>
+    <section class="pt-12 pb-8">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <a href="{{ route('blog.index') }}" class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-blue-700 transition">
+                <svg class="w-4 h-4 rtl-flip" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5 5-5M18 12H6"/></svg>
+                {{ __('blog.back') }}
+            </a>
 
-{{-- 3. Article Content --}}
-<article class="py-10">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-            {!! nl2br(e($post->content)) !!}
+            <h1 class="mt-4 text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 text-balance">{{ $post->title }}</h1>
+
+            <div class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500">
+                @if($post->author)
+                    <span>{{ __('blog.by') }} {{ $post->author->name }}</span>
+                    <span aria-hidden="true">&middot;</span>
+                @endif
+                <time datetime="{{ $post->published_at?->toDateString() }}">
+                    {{ $post->published_at?->translatedFormat('j F Y') }}
+                </time>
+                {{-- Freshness is weighted heavily by AI search engines. --}}
+                @if($post->updated_at && $post->published_at && $post->updated_at->gt($post->published_at->addDay()))
+                    <span aria-hidden="true">&middot;</span>
+                    <span>{{ __('blog.updated') }}: <time datetime="{{ $post->updated_at->toDateString() }}">{{ $post->updated_at->translatedFormat('j F Y') }}</time></span>
+                @endif
+            </div>
         </div>
-    </div>
+    </section>
+
+    @if($post->featured_image)
+        <section class="pb-8">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="glass rounded-3xl overflow-hidden p-2">
+                    <img src="{{ Storage::disk('public')->url($post->featured_image) }}" alt="{{ $post->title }}" class="w-full rounded-2xl">
+                </div>
+            </div>
+        </section>
+    @endif
+
+    <section class="pb-12">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass rounded-3xl p-7 md:p-10">
+                <div class="prose prose-slate prose-lg max-w-none">
+                    {!! Str::markdown($post->content, ['html_input' => 'strip', 'allow_unsafe_links' => false]) !!}
+                </div>
+            </div>
+        </div>
+    </section>
 </article>
 
-{{-- 4. Author Box & Share --}}
-<section class="py-10 border-t border-gray-100">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gray-50 rounded-2xl p-6 md:p-8 flex flex-col sm:flex-row items-start gap-4">
-            <div class="w-14 h-14 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0">
-                {{ $post->author ? strtoupper(substr($post->author->name, 0, 1)) : 'N' }}
+@if($relatedPosts->isNotEmpty())
+    <section class="pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-slate-900">{{ __('blog.related') }}</h2>
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+                @foreach($relatedPosts as $related)
+                    <a href="{{ route('blog.show', $related) }}" class="glass-card rounded-3xl p-6 block">
+                        <time class="text-xs text-slate-500" datetime="{{ $related->published_at?->toDateString() }}">
+                            {{ $related->published_at?->translatedFormat('j F Y') }}
+                        </time>
+                        <h3 class="mt-2 font-bold text-slate-900 leading-snug">{{ $related->title }}</h3>
+                    </a>
+                @endforeach
             </div>
-            <div>
-                <p class="text-sm text-gray-400">Written by</p>
-                <h3 class="font-bold text-gray-900 text-lg">{{ $post->author ? $post->author->name : 'North Line Team' }}</h3>
-                <p class="text-gray-500 text-sm mt-1">Published on {{ $post->published_at->format('F d, Y') }}</p>
-            </div>
+        </div>
+    </section>
+@endif
+
+<section class="pb-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-strong rounded-3xl p-10 md:p-14 text-center">
+            <h2 class="text-3xl font-bold text-slate-900">{{ __('blog.cta.title') }}</h2>
+            <p class="mt-4 text-slate-600 max-w-xl mx-auto leading-relaxed">{{ __('blog.cta.body') }}</p>
+            <a href="{{ route('contact') }}" class="glass-btn-primary inline-block mt-8 px-7 py-3.5 rounded-full font-semibold">
+                {{ __('blog.cta.button') }}
+            </a>
         </div>
     </div>
 </section>
 
-{{-- 5. Related Posts --}}
-@if($relatedPosts->isNotEmpty())
-<section class="py-16 bg-gray-50 border-t border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8">More Posts</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            @foreach($relatedPosts as $related)
-                <a href="{{ route('blog.show', $related) }}" class="group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg hover:border-gray-300 transition">
-                    @if($related->featured_image)
-                        <div class="aspect-video bg-gray-100 overflow-hidden">
-                            <img src="{{ Storage::url($related->featured_image) }}" alt="{{ $related->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        </div>
-                    @endif
-                    <div class="p-5">
-                        <div class="text-xs text-gray-400 mb-2">{{ $related->published_at->format('M d, Y') }}</div>
-                        <h3 class="font-bold text-gray-900 group-hover:text-blue-600 transition">{{ $related->title }}</h3>
-                    </div>
-                </a>
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
 @endsection
