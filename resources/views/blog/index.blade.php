@@ -23,7 +23,7 @@
         @if($posts->isNotEmpty())
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 @foreach($posts as $post)
-                    <a href="{{ route('blog.show', $post) }}" class="glass-card rounded-3xl overflow-hidden block">
+                    <a href="{{ route('blog.show', $post) }}" class="reveal glass-card rounded-3xl overflow-hidden block" style="--reveal-delay: {{ $loop->index % 6 * 70 }}ms">
                         @if($post->featured_image)
                             <div class="aspect-video bg-white/40 overflow-hidden">
                                 <img src="{{ Storage::disk('public')->url($post->featured_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover" loading="lazy">
@@ -62,7 +62,7 @@
 
 <section class="pb-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="glass-strong rounded-3xl p-10 md:p-14 text-center">
+        <div class="reveal glass-strong rounded-3xl p-10 md:p-14 text-center">
             <h2 class="text-3xl font-bold text-slate-900">{{ __('blog.cta.title') }}</h2>
             <p class="mt-4 text-slate-600 max-w-xl mx-auto leading-relaxed">{{ __('blog.cta.body') }}</p>
             <a href="{{ route('contact') }}" class="glass-btn-primary inline-block mt-8 px-7 py-3.5 rounded-full font-semibold">

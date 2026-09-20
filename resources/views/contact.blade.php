@@ -41,7 +41,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             {{-- Form --}}
-            <div class="lg:col-span-2">
+            <div class="reveal lg:col-span-2">
                 <form method="POST" action="{{ route('contact.store') }}" class="glass rounded-3xl p-6 md:p-8 space-y-5">
                     @csrf
 
@@ -92,7 +92,7 @@
             </div>
 
             {{-- Details --}}
-            <div class="space-y-5">
+            <div class="reveal space-y-5" style="--reveal-delay: 120ms">
                 <div class="glass rounded-3xl p-6 space-y-5">
                     <div class="flex items-start gap-3">
                         <div class="glass-subtle w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-blue-700">
@@ -146,10 +146,10 @@
 {{-- FAQ --}}
 <section class="pb-16">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-center text-3xl md:text-4xl font-bold text-slate-900">{{ __('contact.faq_title') }}</h2>
+        <h2 class="reveal text-center text-3xl md:text-4xl font-bold text-slate-900">{{ __('contact.faq_title') }}</h2>
         <div class="mt-10 space-y-4">
             @foreach($faqs as $faq)
-                <div class="glass rounded-3xl p-6">
+                <div class="reveal glass rounded-3xl p-6" style="--reveal-delay: {{ $loop->index % 6 * 60 }}ms">
                     <h3 class="font-bold text-slate-900">{{ $faq['question'] }}</h3>
                     <p class="mt-2.5 text-slate-600 leading-relaxed">{{ $faq['answer'] }}</p>
                 </div>

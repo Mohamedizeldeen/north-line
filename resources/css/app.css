@@ -201,6 +201,145 @@
     .font-latin {
         font-family: var(--font-latin);
     }
+
+    /* ----------------------------------------------------------------------
+       Hero — "Blueprint": engineered, not decorative. A faint grid-paper
+       ground, a technical tag + rule, a system map of the six real
+       service stages, and a spec-sheet stat strip. Everything animates
+       once on load (this is above-the-fold content, so nothing here
+       waits on scroll) and is pure CSS — no JS dependency to become
+       visible.
+       ---------------------------------------------------------------------- */
+    .hero-grid-paper {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+            linear-gradient(var(--line) 1px, transparent 1px),
+            linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 32px 32px;
+        -webkit-mask-image: radial-gradient(75% 60% at 50% 10%, #000 30%, transparent 82%);
+        mask-image: radial-gradient(75% 60% at 50% 10%, #000 30%, transparent 82%);
+    }
+
+    .hero-tag {
+        border: 1px solid var(--line-strong);
+        opacity: 0;
+        animation: hero-in 0.5s 0.05s ease-out forwards;
+    }
+
+    .hero-rule {
+        width: 4rem;
+        height: 2px;
+        background: var(--brand);
+        opacity: 0;
+        animation: hero-in 0.5s 0.15s ease-out forwards;
+    }
+
+    .hero-lede,
+    .hero-ctas {
+        opacity: 0;
+        animation: hero-in 0.55s ease-out forwards;
+    }
+    .hero-lede { animation-delay: 0.2s; }
+    .hero-ctas { animation-delay: 0.3s; }
+
+    @keyframes hero-in {
+        from { opacity: 0; transform: translateY(14px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* System map: the six real service stages, numbered like a spec index. */
+    .system-map {
+        position: relative;
+        border-radius: 1.5rem;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        box-shadow: var(--shadow-sm), inset 0 1px 0 0 var(--edge);
+        overflow: hidden;
+        opacity: 0;
+        animation: hero-in 0.6s 0.4s ease-out forwards;
+    }
+
+    .system-map-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .system-cell {
+        padding: 1.25rem 1.5rem;
+        border-block-end: 1px solid var(--line);
+        text-align: start;
+    }
+    .system-cell:last-child { border-block-end: none; }
+
+    .system-idx {
+        font-family: var(--font-latin);
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: var(--brand);
+    }
+
+    @media (min-width: 768px) {
+        .system-map-grid { grid-template-columns: repeat(3, 1fr); }
+        .system-cell { border-inline-end: 1px solid var(--line); }
+        .system-cell:nth-child(3n) { border-inline-end: none; }
+        .system-cell:nth-child(n+4) { border-block-end: none; }
+    }
+
+    .system-map-scan {
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--brand), transparent);
+        opacity: 0;
+        pointer-events: none;
+        animation: system-scan 1.8s 1.1s ease-in-out;
+    }
+
+    @keyframes system-scan {
+        0% { inset-block-start: 0; opacity: 0; }
+        8% { opacity: 0.9; }
+        92% { opacity: 0.9; }
+        100% { inset-block-start: 100%; opacity: 0; }
+    }
+
+    /* Spec-sheet stat strip, replacing the old rounded trust card. */
+    .spec-strip {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        border: 1px solid var(--line);
+        border-radius: 1.5rem;
+        overflow: hidden;
+        opacity: 0;
+        animation: hero-in 0.6s 0.55s ease-out forwards;
+    }
+
+    .spec-cell {
+        padding: 1.1rem 0.75rem;
+        text-align: center;
+        border-block-end: 1px solid var(--line);
+    }
+    .spec-cell:nth-child(2n) { border-inline-start: 1px solid var(--line); }
+    .spec-cell:nth-last-child(-n+2) { border-block-end: none; }
+
+    @media (min-width: 768px) {
+        .spec-strip { grid-template-columns: repeat(4, 1fr); }
+        .spec-cell { border-block-end: none; border-inline-start: 1px solid var(--line); }
+        .spec-cell:first-child { border-inline-start: none; }
+        .spec-cell:nth-child(2n) { border-inline-start: 1px solid var(--line); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hero-tag, .hero-rule, .hero-lede, .hero-ctas, .system-map, .spec-strip {
+            animation: none;
+            opacity: 1;
+        }
+        .system-map-scan { animation: none; opacity: 0; }
+    }
 }
 
 /* ==========================================================================
@@ -578,6 +717,32 @@
 }
 
 /* ==========================================================================
+   Scroll reveal — sitewide, JS-gated (see the `js` class added in
+   layouts/app.blade.php). Sections fade/rise in once as they enter the
+   viewport. The un-prefixed `.reveal` rule always renders fully visible,
+   so content only ever hides once JS has confirmed it can also reveal it —
+   a no-JS visitor, or one whose JS fails, never loses content.
+   Grid children can stagger via an inline `--reveal-delay`.
+   ========================================================================== */
+
+.reveal {
+    opacity: 1;
+    transform: none;
+}
+
+html.js .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.js .reveal.in {
+    opacity: 1;
+    transform: none;
+}
+
+/* ==========================================================================
    Accessibility
    ========================================================================== */
 
@@ -594,6 +759,12 @@
         &:hover {
             transform: none;
         }
+    }
+
+    html.js .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
     }
 }
 

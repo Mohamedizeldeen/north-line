@@ -21,9 +21,9 @@
 <section class="pb-20">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         @if($clients->isNotEmpty())
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="flex flex-wrap justify-center gap-5">
                 @foreach($clients as $client)
-                    <x-client-logo :client="$client" class="h-28" />
+                    <x-client-logo :client="$client" class="reveal h-28 w-48" style="--reveal-delay: {{ $loop->index % 8 * 60 }}ms" />
                 @endforeach
             </div>
         @else

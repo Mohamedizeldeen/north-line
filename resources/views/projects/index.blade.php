@@ -23,7 +23,7 @@
         @if($projects->isNotEmpty())
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 @foreach($projects as $project)
-                    <a href="{{ route('projects.show', $project) }}" class="glass-card rounded-3xl overflow-hidden block">
+                    <a href="{{ route('projects.show', $project) }}" class="reveal glass-card rounded-3xl overflow-hidden block" style="--reveal-delay: {{ $loop->index % 6 * 70 }}ms">
                         @if($project->image)
                             <div class="aspect-video bg-white/40 overflow-hidden">
                                 <img src="{{ Storage::disk('public')->url($project->image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover" loading="lazy">
@@ -52,7 +52,7 @@
 
 <section class="pb-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="glass-strong rounded-3xl p-10 md:p-14 text-center">
+        <div class="reveal glass-strong rounded-3xl p-10 md:p-14 text-center">
             <h2 class="text-3xl font-bold text-slate-900">{{ __('work.cta.title') }}</h2>
             <p class="mt-4 text-slate-600 max-w-xl mx-auto leading-relaxed">{{ __('work.cta.body') }}</p>
             <a href="{{ route('contact') }}" class="glass-btn-primary inline-block mt-8 px-7 py-3.5 rounded-full font-semibold">

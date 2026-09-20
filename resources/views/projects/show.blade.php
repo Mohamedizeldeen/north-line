@@ -38,7 +38,7 @@
 @if($project->image)
     <section class="pb-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass rounded-3xl overflow-hidden p-2">
+            <div class="reveal glass rounded-3xl overflow-hidden p-2">
                 <img src="{{ Storage::disk('public')->url($project->image) }}" alt="{{ $project->title }}" class="w-full rounded-2xl">
             </div>
         </div>
@@ -48,7 +48,7 @@
 @if($project->content)
     <section class="pb-12">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass rounded-3xl p-7 md:p-10">
+            <div class="reveal glass rounded-3xl p-7 md:p-10">
                 <div class="prose prose-slate prose-lg max-w-none">
                     {!! Str::markdown($project->content, ['html_input' => 'strip', 'allow_unsafe_links' => false]) !!}
                 </div>
@@ -59,7 +59,7 @@
 
 <section class="pb-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="glass-strong rounded-3xl p-10 md:p-14 text-center">
+        <div class="reveal glass-strong rounded-3xl p-10 md:p-14 text-center">
             <h2 class="text-3xl font-bold text-slate-900">{{ __('work.cta.title') }}</h2>
             <p class="mt-4 text-slate-600 max-w-xl mx-auto leading-relaxed">{{ __('work.cta.body') }}</p>
             <a href="{{ route('contact') }}" class="glass-btn-primary inline-block mt-8 px-7 py-3.5 rounded-full font-semibold">

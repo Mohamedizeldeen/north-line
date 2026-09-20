@@ -3,6 +3,7 @@
 return [
 
     'hero' => [
+        'tag' => 'System Overview — Muscat, Oman',
         'eyebrow' => 'Digital transformation for businesses · Oman & the Gulf',
         'title_lead' => 'We transform your business',
         'title_accent' => 'digitally',

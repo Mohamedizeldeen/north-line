@@ -17,6 +17,10 @@
             } catch (e) {
                 document.documentElement.setAttribute('data-theme', 'dark');
             }
+            // Scroll-reveal (see .reveal in app.css) only ever hides content
+            // when JS actually runs — so it never leaves a no-JS visitor with
+            // invisible sections. Client-side only, same reasoning as data-theme.
+            document.documentElement.classList.add('js');
         })();
         function toggleTheme() {
             var el = document.documentElement;

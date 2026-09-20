@@ -20,7 +20,7 @@
 
 <section class="pb-24">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <form method="POST" action="{{ route('quote.store') }}" class="glass rounded-3xl p-6 md:p-8 space-y-5">
+        <form method="POST" action="{{ route('quote.store') }}" class="reveal glass rounded-3xl p-6 md:p-8 space-y-5">
             @csrf
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">

@@ -49,7 +49,7 @@
     @if($post->featured_image)
         <section class="pb-8">
             <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="glass rounded-3xl overflow-hidden p-2">
+                <div class="reveal glass rounded-3xl overflow-hidden p-2">
                     <img src="{{ Storage::disk('public')->url($post->featured_image) }}" alt="{{ $post->title }}" class="w-full rounded-2xl">
                 </div>
             </div>
@@ -58,7 +58,7 @@
 
     <section class="pb-12">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass rounded-3xl p-7 md:p-10">
+            <div class="reveal glass rounded-3xl p-7 md:p-10">
                 <div class="prose prose-slate prose-lg max-w-none">
                     {!! Str::markdown($post->content, ['html_input' => 'strip', 'allow_unsafe_links' => false]) !!}
                 </div>
@@ -70,10 +70,10 @@
 @if($relatedPosts->isNotEmpty())
     <section class="pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-2xl font-bold text-slate-900">{{ __('blog.related') }}</h2>
+            <h2 class="reveal text-2xl font-bold text-slate-900">{{ __('blog.related') }}</h2>
             <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
                 @foreach($relatedPosts as $related)
-                    <a href="{{ route('blog.show', $related) }}" class="glass-card rounded-3xl p-6 block">
+                    <a href="{{ route('blog.show', $related) }}" class="reveal glass-card rounded-3xl p-6 block" style="--reveal-delay: {{ $loop->index * 90 }}ms">
                         <time class="text-xs text-slate-500" datetime="{{ $related->published_at?->toDateString() }}">
                             {{ $related->published_at?->translatedFormat('j F Y') }}
                         </time>
@@ -87,7 +87,7 @@
 
 <section class="pb-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="glass-strong rounded-3xl p-10 md:p-14 text-center">
+        <div class="reveal glass-strong rounded-3xl p-10 md:p-14 text-center">
             <h2 class="text-3xl font-bold text-slate-900">{{ __('blog.cta.title') }}</h2>
             <p class="mt-4 text-slate-600 max-w-xl mx-auto leading-relaxed">{{ __('blog.cta.body') }}</p>
             <a href="{{ route('contact') }}" class="glass-btn-primary inline-block mt-8 px-7 py-3.5 rounded-full font-semibold">

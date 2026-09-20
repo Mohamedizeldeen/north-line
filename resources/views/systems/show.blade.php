@@ -47,7 +47,7 @@
 @if($system->image)
     <section class="pb-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass rounded-3xl overflow-hidden p-2">
+            <div class="reveal glass rounded-3xl overflow-hidden p-2">
                 <img src="{{ Storage::disk('public')->url($system->image) }}" alt="{{ $system->title }}" class="w-full rounded-2xl">
             </div>
         </div>
@@ -57,7 +57,7 @@
 @if($system->content)
     <section class="pb-12">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass rounded-3xl p-7 md:p-10">
+            <div class="reveal glass rounded-3xl p-7 md:p-10">
                 <div class="prose prose-slate prose-lg max-w-none">
                     {!! Str::markdown($system->content, ['html_input' => 'strip', 'allow_unsafe_links' => false]) !!}
                 </div>
@@ -68,7 +68,7 @@
 
 <section class="pb-12">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="glass rounded-3xl p-7 md:p-10">
+        <div class="reveal glass rounded-3xl p-7 md:p-10">
             <h2 class="text-2xl font-bold text-slate-900">{{ __('products.detail.what_you_get') }}</h2>
             <ul class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 @foreach(__('products.detail.includes') as $item)
@@ -84,7 +84,7 @@
 
 <section class="pb-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="glass-strong rounded-3xl p-10 md:p-14 text-center">
+        <div class="reveal glass-strong rounded-3xl p-10 md:p-14 text-center">
             <h2 class="text-3xl font-bold text-slate-900">{{ __('products.detail.cta_title') }}</h2>
             <p class="mt-4 text-slate-600 max-w-xl mx-auto leading-relaxed">{{ __('products.detail.cta_body') }}</p>
             <a href="{{ route('contact') }}" class="glass-btn-primary inline-block mt-8 px-7 py-3.5 rounded-full font-semibold">
