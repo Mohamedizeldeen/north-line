@@ -7,17 +7,27 @@ namespace App\Models\Concerns;
  * slug_ar/slug_en, ...), with a slug that resolves against whichever
  * language the current URL is in.
  *
- * Route generation and binding both key off the {locale} route segment:
- * - Inside a public request (SetLocale leaves {locale} readable before it
- *   forgets the parameter), the URL for this model is its slug in that
- *   locale, and an incoming slug is looked up in that same locale.
+ * Route generation and binding both key off whether the current route is
+ * localized (its URI starts with the {locale} segment):
+ * - Inside a public request, the URL for this model is its slug in the
+ *   active app locale, and an incoming slug is looked up in that locale.
  * - Outside a localized route (admin, console), both fall back to id, so
  *   the admin panel can reach a row regardless of which languages it has.
  *
+ * getRouteKey() reads app()->getLocale() rather than the {locale} route
+ * parameter directly: SetLocale sets the app locale early, but forgets the
+ * {locale} route parameter before the controller runs (so it doesn't leak
+ * into action arguments), and by the time a view is rendering links to OTHER
+ * rows — looping a project index, for instance — that parameter is already
+ * gone. The route's URI pattern survives, though, which is what identifies a
+ * localized route here.
+ *
+ * resolveRouteBinding() still reads the {locale} route parameter directly:
+ * it runs during SubstituteBindings, before SetLocale has forgotten it.
+ *
  * Generating a link to a DIFFERENT locale than the current request (hreflang
- * alternates, the sitemap) must not rely on this — pass the target locale's
- * slug_{locale} explicitly instead, since request()->route('locale') only
- * ever reflects the request being served right now.
+ * alternates, the sitemap) must not rely on either — pass the target
+ * locale's slug_{locale} explicitly instead.
  */
 trait HasBilingualSlug
 {
@@ -28,8 +38,8 @@ trait HasBilingualSlug
 
     public function getRouteKey()
     {
-        if ($locale = request()->route('locale')) {
-            return $this->{"slug_{$locale}"} ?? $this->id;
+        if ($this->onLocalizedRoute()) {
+            return $this->{'slug_'.app()->getLocale()} ?? $this->id;
         }
 
         return $this->id;
@@ -62,5 +72,12 @@ trait HasBilingualSlug
     public function scopeAvailableIn($query, ?string $locale = null)
     {
         return $query->whereNotNull('slug_'.($locale ?? app()->getLocale()));
+    }
+
+    private function onLocalizedRoute(): bool
+    {
+        $route = request()->route();
+
+        return $route && str_starts_with($route->uri(), '{locale}');
     }
 }
