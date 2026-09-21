@@ -8,18 +8,11 @@
         <a href="{{ route('admin.blog-posts.create') }}" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition">+ New Post</a>
     </div>
 
-    <div class="flex gap-2 text-sm">
-        <a href="{{ route('admin.blog-posts.index') }}" class="px-3 py-1.5 rounded-lg {{ request('locale') ? 'bg-gray-800 text-gray-300' : 'bg-blue-600 text-white' }}">All</a>
-        <a href="{{ route('admin.blog-posts.index', ['locale' => 'ar']) }}" class="px-3 py-1.5 rounded-lg {{ request('locale') === 'ar' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300' }}">العربية</a>
-        <a href="{{ route('admin.blog-posts.index', ['locale' => 'en']) }}" class="px-3 py-1.5 rounded-lg {{ request('locale') === 'en' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300' }}">English</a>
-    </div>
-
     <div class="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
         <table class="w-full text-sm">
             <thead class="bg-gray-800/50">
                 <tr>
                     <th class="text-left px-4 py-3 font-medium text-gray-300">Title</th>
-                    <th class="text-left px-4 py-3 font-medium text-gray-300">Lang</th>
                     <th class="text-left px-4 py-3 font-medium text-gray-300">Author</th>
                     <th class="text-left px-4 py-3 font-medium text-gray-300">Status</th>
                     <th class="text-left px-4 py-3 font-medium text-gray-300">Date</th>
@@ -29,11 +22,15 @@
             <tbody class="divide-y divide-gray-800">
                 @forelse($posts as $post)
                     <tr class="hover:bg-gray-800/30">
-                        <td class="px-4 py-3 font-medium">{{ $post->title }}</td>
                         <td class="px-4 py-3">
-                            <span class="text-xs px-2 py-1 rounded-full {{ $post->locale === 'ar' ? 'bg-purple-900/50 text-purple-300' : 'bg-blue-900/50 text-blue-300' }}">
-                                {{ strtoupper($post->locale) }}
-                            </span>
+                            <div class="font-medium">{{ $post->title_ar ?: $post->title_en }}</div>
+                            <div class="flex items-center gap-1.5 mt-1">
+                                <span class="text-[10px] px-1.5 py-0.5 rounded {{ $post->title_ar ? 'bg-purple-900/50 text-purple-300' : 'bg-gray-800 text-gray-600' }}">AR</span>
+                                <span class="text-[10px] px-1.5 py-0.5 rounded {{ $post->title_en ? 'bg-blue-900/50 text-blue-300' : 'bg-gray-800 text-gray-600' }}">EN</span>
+                                @if($post->title_en && $post->title_ar)
+                                    <span class="text-xs text-gray-500">{{ $post->title_en }}</span>
+                                @endif
+                            </div>
                         </td>
                         <td class="px-4 py-3 text-gray-400">{{ $post->author->name ?? 'N/A' }}</td>
                         <td class="px-4 py-3">
@@ -44,14 +41,14 @@
                         <td class="px-4 py-3 text-gray-400">{{ $post->created_at->format('M d, Y') }}</td>
                         <td class="px-4 py-3 text-right space-x-2">
                             <a href="{{ route('admin.blog-posts.edit', $post) }}" class="text-blue-400 hover:text-blue-300">Edit</a>
-                            <form method="POST" action="{{ route('admin.blog-posts.destroy', $post) }}" class="inline" onsubmit="return confirm('Delete this post?')">
+                            <form method="POST" action="{{ route('admin.blog-posts.destroy', $post) }}" class="inline" onsubmit="return confirm('Delete this post? This removes both languages.')">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-red-400 hover:text-red-300">Delete</button>
                             </form>
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="6" class="text-center py-8 text-gray-500">No blog posts yet.</td></tr>
+                    <tr><td colspan="5" class="text-center py-8 text-gray-500">No blog posts yet.</td></tr>
                 @endforelse
             </tbody>
         </table>

@@ -2,7 +2,7 @@
 @section('page-title', 'Edit Blog Post')
 
 @section('content')
-@php $primary = $ar ?? $en; @endphp
+@php $primary = $blogPost; @endphp
 <div class="max-w-5xl">
     <h2 class="text-xl font-bold mb-6">Edit Blog Post</h2>
 
@@ -10,8 +10,7 @@
         @csrf @method('PUT')
 
         @include('admin.partials.bilingual-fields', [
-            'ar' => $ar,
-            'en' => $en,
+            'item' => $blogPost,
             'fields' => [
                 ['key' => 'title', 'label' => 'Title'],
                 ['key' => 'excerpt', 'label' => 'Excerpt', 'type' => 'textarea', 'rows' => 2],

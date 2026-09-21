@@ -11,12 +11,9 @@ use Illuminate\Validation\ValidationException;
 
 class ProjectController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $projects = Project::when($request->filled('locale'), fn ($q) => $q->where('locale', $request->string('locale')))
-            ->latest()
-            ->paginate(15)
-            ->withQueryString();
+        $projects = Project::latest()->paginate(15);
 
         return view('admin.projects.index', compact('projects'));
     }
@@ -28,30 +25,25 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $this->validatePair($request);
-        $shared = $this->sharedAttributes($request, $validated, null);
+        $validated = $this->validated($request);
+        $attrs = $this->sharedAttributes($request, $validated, null);
 
-        $this->savePair($validated, $shared, null, null);
+        Project::create(array_merge($attrs, $this->localizedAttributes($validated)));
 
         return redirect()->route('admin.projects.index')->with('success', 'Project created successfully.');
     }
 
     public function edit(Project $project)
     {
-        [$ar, $en] = $this->pair($project);
-
-        return view('admin.projects.edit', compact('project', 'ar', 'en'));
+        return view('admin.projects.edit', compact('project'));
     }
 
     public function update(Request $request, Project $project)
     {
-        $validated = $this->validatePair($request);
+        $validated = $this->validated($request);
+        $attrs = $this->sharedAttributes($request, $validated, $project);
 
-        [$ar, $en] = $this->pair($project);
-
-        $shared = $this->sharedAttributes($request, $validated, $ar ?? $en);
-
-        $this->savePair($validated, $shared, $ar, $en);
+        $project->update(array_merge($attrs, $this->localizedAttributes($validated)));
 
         return redirect()->route('admin.projects.index')->with('success', 'Project updated successfully.');
     }
@@ -63,18 +55,7 @@ class ProjectController extends Controller
         return redirect()->route('admin.projects.index')->with('success', 'Project deleted successfully.');
     }
 
-    /** The Arabic and English rows of the same project, if they exist. */
-    private function pair(Project $project): array
-    {
-        $sibling = $project->translation($project->locale === 'ar' ? 'en' : 'ar');
-
-        return [
-            $project->locale === 'ar' ? $project : $sibling,
-            $project->locale === 'en' ? $project : $sibling,
-        ];
-    }
-
-    private function validatePair(Request $request): array
+    private function validated(Request $request): array
     {
         $validated = $request->validate([
             'title_ar' => 'nullable|string|max:255',
@@ -117,7 +98,22 @@ class ProjectController extends Controller
         return $validated;
     }
 
-    /** Fields that are not language-specific: one value shared by both rows. */
+    /** Title/slug/description/content, per language, cleared when that language's title is blank. */
+    private function localizedAttributes(array $validated): array
+    {
+        return [
+            'title_ar' => $validated['title_ar'],
+            'slug_ar' => $validated['title_ar'] ? Str::slug($validated['title_ar']) : null,
+            'description_ar' => $validated['title_ar'] ? $validated['description_ar'] : null,
+            'content_ar' => $validated['title_ar'] ? $validated['content_ar'] : null,
+            'title_en' => $validated['title_en'],
+            'slug_en' => $validated['title_en'] ? Str::slug($validated['title_en']) : null,
+            'description_en' => $validated['title_en'] ? $validated['description_en'] : null,
+            'content_en' => $validated['title_en'] ? $validated['content_en'] : null,
+        ];
+    }
+
+    /** Fields that are not language-specific. */
     private function sharedAttributes(Request $request, array $validated, ?Project $existing): array
     {
         $shared = [
@@ -158,34 +154,5 @@ class ProjectController extends Controller
         }
 
         return $shared;
-    }
-
-    private function savePair(array $validated, array $shared, ?Project $ar, ?Project $en): void
-    {
-        if ($validated['title_ar']) {
-            $attrs = array_merge($shared, [
-                'title' => $validated['title_ar'],
-                'slug' => Str::slug($validated['title_ar']),
-                'description' => $validated['description_ar'],
-                'content' => $validated['content_ar'] ?? null,
-            ]);
-
-            $ar = $ar ? tap($ar)->update($attrs) : Project::create(array_merge($attrs, ['locale' => 'ar']));
-        }
-
-        if ($validated['title_en']) {
-            $attrs = array_merge($shared, [
-                'title' => $validated['title_en'],
-                'slug' => Str::slug($validated['title_en']),
-                'description' => $validated['description_en'],
-                'content' => $validated['content_en'] ?? null,
-            ]);
-
-            $en = $en ? tap($en)->update($attrs) : Project::create(array_merge($attrs, ['locale' => 'en']));
-        }
-
-        if ($ar && $en) {
-            $ar->pairWith($en);
-        }
     }
 }

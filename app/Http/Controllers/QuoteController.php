@@ -11,7 +11,7 @@ class QuoteController extends Controller
     public function show(Request $request)
     {
         // Services populate the dropdown; ?service=<slug> preselects one.
-        $services = System::inLocale()->published()->orderBy('sort_order')->get(['title', 'slug']);
+        $services = System::availableIn()->published()->orderBy('sort_order')->get();
         $selected = $request->query('service');
 
         return view('quote', compact('services', 'selected'));

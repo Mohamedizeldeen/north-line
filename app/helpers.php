@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Concerns\HasLocale;
+use App\Models\Concerns\HasBilingualSlug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -37,10 +37,14 @@ if (! function_exists('localized_alternate')) {
      *
      * Null is the important case. A detail page's slug differs per language
      * (/ar/blog/تكلفة-متجر vs /en/blog/store-cost), so the locale segment cannot
-     * simply be swapped — the counterpart is found through the translation
-     * group. When an article has not been written in the other language,
-     * hreflang must stay silent rather than point at a page that is not the
-     * translation.
+     * simply be swapped. When the bound model has no content in the target
+     * language, hreflang must stay silent rather than point at a page that is
+     * not the translation.
+     *
+     * The target locale's slug is passed explicitly rather than the model
+     * instance: model route-key resolution reads request()->route('locale'),
+     * which reflects the request being served right now, not the locale this
+     * link is being generated for.
      */
     function localized_alternate(string $locale): ?string
     {
@@ -59,14 +63,12 @@ if (! function_exists('localized_alternate')) {
                 continue;
             }
 
-            if ($value instanceof Model && in_array(HasLocale::class, class_uses_recursive($value), true)) {
-                $translation = $value->translation($locale);
-
-                if (! $translation) {
+            if ($value instanceof Model && in_array(HasBilingualSlug::class, class_uses_recursive($value), true)) {
+                if (! $value->hasLocale($locale)) {
                     return null;
                 }
 
-                $parameters[$key] = $translation;
+                $parameters[$key] = $value->{"slug_{$locale}"};
 
                 continue;
             }

@@ -13,7 +13,6 @@
         <table class="w-full text-sm">
             <thead class="bg-gray-800/50">
                 <tr>
-                    <th class="text-left px-4 py-3 font-medium text-gray-300">Lang</th>
                     <th class="text-left px-4 py-3 font-medium text-gray-300">Question</th>
                     <th class="text-left px-4 py-3 font-medium text-gray-300">Published</th>
                     <th class="text-left px-4 py-3 font-medium text-gray-300">Order</th>
@@ -23,8 +22,13 @@
             <tbody class="divide-y divide-gray-800">
                 @forelse($faqs as $faq)
                     <tr class="hover:bg-gray-800/30">
-                        <td class="px-4 py-3"><span class="text-xs bg-gray-700 text-gray-300 px-2 py-0.5 rounded uppercase">{{ $faq->locale }}</span></td>
-                        <td class="px-4 py-3 font-medium">{{ \Illuminate\Support\Str::limit($faq->question, 70) }}</td>
+                        <td class="px-4 py-3">
+                            <div class="font-medium">{{ \Illuminate\Support\Str::limit($faq->question_ar ?: $faq->question_en, 70) }}</div>
+                            <div class="flex items-center gap-1.5 mt-1">
+                                <span class="text-[10px] px-1.5 py-0.5 rounded {{ $faq->question_ar ? 'bg-purple-900/50 text-purple-300' : 'bg-gray-800 text-gray-600' }}">AR</span>
+                                <span class="text-[10px] px-1.5 py-0.5 rounded {{ $faq->question_en ? 'bg-blue-900/50 text-blue-300' : 'bg-gray-800 text-gray-600' }}">EN</span>
+                            </div>
+                        </td>
                         <td class="px-4 py-3">
                             @if($faq->is_published)
                                 <span class="text-xs bg-green-900/50 text-green-300 px-2 py-0.5 rounded-full">Published</span>
@@ -35,14 +39,14 @@
                         <td class="px-4 py-3 text-gray-400">{{ $faq->sort_order }}</td>
                         <td class="px-4 py-3 text-right space-x-2">
                             <a href="{{ route('admin.faqs.edit', $faq) }}" class="text-blue-400 hover:text-blue-300">Edit</a>
-                            <form method="POST" action="{{ route('admin.faqs.destroy', $faq) }}" class="inline" onsubmit="return confirm('Delete this FAQ?')">
+                            <form method="POST" action="{{ route('admin.faqs.destroy', $faq) }}" class="inline" onsubmit="return confirm('Delete this FAQ? This removes both languages.')">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-red-400 hover:text-red-300">Delete</button>
                             </form>
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="5" class="text-center py-8 text-gray-500">No FAQs yet — the default set is being shown on the site.</td></tr>
+                    <tr><td colspan="4" class="text-center py-8 text-gray-500">No FAQs yet — the default set is being shown on the site.</td></tr>
                 @endforelse
             </tbody>
         </table>

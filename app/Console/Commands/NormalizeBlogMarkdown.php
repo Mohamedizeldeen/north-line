@@ -31,30 +31,42 @@ class NormalizeBlogMarkdown extends Command
         $changed = 0;
 
         foreach (BlogPost::all() as $post) {
-            if (str_contains($post->content, '## ')) {
-                $this->line("  <fg=gray>skip</> #{$post->id} — already has Markdown headings");
+            foreach (['content_ar', 'content_en'] as $column) {
+                $content = $post->{$column};
 
-                continue;
+                if (! $content) {
+                    continue;
+                }
+
+                if (str_contains($content, '## ')) {
+                    $this->line("  <fg=gray>skip</> #{$post->id} [{$column}] — already has Markdown headings");
+
+                    continue;
+                }
+
+                $converted = $this->convert($content);
+
+                if ($converted === $content) {
+                    $this->line("  <fg=gray>skip</> #{$post->id} [{$column}] — nothing to convert");
+
+                    continue;
+                }
+
+                $backup[] = ['id' => $post->id, 'column' => $column, 'content' => $content];
+                $headings = substr_count($converted, "\n## ") + (str_starts_with($converted, '## ') ? 1 : 0);
+                $title = $post->title_ar ?: $post->title_en;
+                $this->line("  <fg=green>convert</> #{$post->id} [{$column}] — {$headings} heading(s) — {$title}");
+
+                if (! $dryRun) {
+                    $post->{$column} = $converted;
+                }
+
+                $changed++;
             }
-
-            $converted = $this->convert($post->content);
-
-            if ($converted === $post->content) {
-                $this->line("  <fg=gray>skip</> #{$post->id} — nothing to convert");
-
-                continue;
-            }
-
-            $backup[] = ['id' => $post->id, 'content' => $post->content];
-            $headings = substr_count($converted, "\n## ") + (str_starts_with($converted, '## ') ? 1 : 0);
-            $this->line("  <fg=green>convert</> #{$post->id} — {$headings} heading(s) — {$post->title}");
 
             if (! $dryRun) {
-                $post->content = $converted;
                 $post->saveQuietly();
             }
-
-            $changed++;
         }
 
         if ($dryRun) {

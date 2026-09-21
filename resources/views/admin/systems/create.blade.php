@@ -9,8 +9,7 @@
         @csrf
 
         @include('admin.partials.bilingual-fields', [
-            'ar' => null,
-            'en' => null,
+            'item' => null,
             'fields' => [
                 ['key' => 'title', 'label' => 'Title'],
                 ['key' => 'description', 'label' => 'Description', 'type' => 'textarea', 'rows' => 3],

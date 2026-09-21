@@ -17,36 +17,24 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         foreach ($this->products() as $order => $product) {
-            $ar = System::updateOrCreate(
-                ['locale' => 'ar', 'slug' => $product['ar']['slug']],
-                [
-                    'title' => $product['ar']['title'],
-                    'description' => $product['ar']['description'],
-                    'content' => $product['ar']['content'],
-                    'is_published' => true,
-                    'sort_order' => $order,
-                ]
-            );
-
-            // The Arabic row anchors the group: Arabic is the primary language.
-            $ar->forceFill(['translation_group_id' => $ar->translation_group_id ?? $ar->id])->save();
-
             System::updateOrCreate(
-                ['locale' => 'en', 'slug' => $product['en']['slug']],
+                ['slug_ar' => $product['ar']['slug']],
                 [
-                    'title' => $product['en']['title'],
-                    'description' => $product['en']['description'],
-                    'content' => $product['en']['content'],
+                    'title_ar' => $product['ar']['title'],
+                    'description_ar' => $product['ar']['description'],
+                    'content_ar' => $product['ar']['content'],
+                    'slug_en' => $product['en']['slug'],
+                    'title_en' => $product['en']['title'],
+                    'description_en' => $product['en']['description'],
+                    'content_en' => $product['en']['content'],
                     'is_published' => true,
                     'sort_order' => $order,
-                    'translation_group_id' => $ar->translation_group_id,
                 ]
             );
         }
 
         // The old generic entries are not what we sell any more.
-        System::whereNotIn('slug', collect($this->products())
-            ->flatMap(fn ($p) => [$p['ar']['slug'], $p['en']['slug']])->all())
+        System::whereNotIn('slug_ar', collect($this->products())->pluck('ar.slug')->all())
             ->update(['is_published' => false]);
     }
 

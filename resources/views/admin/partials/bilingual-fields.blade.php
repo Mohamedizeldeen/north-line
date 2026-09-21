@@ -1,7 +1,7 @@
 @php
     $columns = [
-        'ar' => ['label' => 'العربية (Arabic)', 'dir' => 'rtl', 'color' => 'text-purple-300', 'model' => $ar ?? null],
-        'en' => ['label' => 'English', 'dir' => 'ltr', 'color' => 'text-blue-300', 'model' => $en ?? null],
+        'ar' => ['label' => 'العربية (Arabic)', 'dir' => 'rtl', 'color' => 'text-purple-300'],
+        'en' => ['label' => 'English', 'dir' => 'ltr', 'color' => 'text-blue-300'],
     ];
 @endphp
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -12,7 +12,7 @@
             @foreach($fields as $field)
                 @php
                     $name = $field['key'].'_'.$locale;
-                    $value = old($name, $col['model']->{$field['key']} ?? '');
+                    $value = old($name, ($item ?? null)?->{$name} ?? '');
                 @endphp
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-1">{{ $field['label'] }}</label>

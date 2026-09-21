@@ -2,7 +2,7 @@
 @section('page-title', 'Edit FAQ')
 
 @section('content')
-@php $primary = $ar ?? $en; @endphp
+@php $primary = $faq; @endphp
 <div class="max-w-4xl">
     <h2 class="text-xl font-bold mb-6">Edit FAQ</h2>
 
@@ -10,8 +10,7 @@
         @csrf @method('PUT')
 
         @include('admin.partials.bilingual-fields', [
-            'ar' => $ar,
-            'en' => $en,
+            'item' => $faq,
             'fields' => [
                 ['key' => 'question', 'label' => 'Question'],
                 ['key' => 'answer', 'label' => 'Answer', 'type' => 'textarea', 'rows' => 4],

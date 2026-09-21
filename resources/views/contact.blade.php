@@ -8,7 +8,7 @@
     //
     // Admin-managed FAQs (the faqs table) win when present; otherwise the
     // lang-file defaults are used — so a fresh database still renders a FAQ.
-    $faqs = \App\Models\Faq::inLocale()->published()->orderBy('sort_order')->get()
+    $faqs = \App\Models\Faq::availableIn()->published()->orderBy('sort_order')->get()
         ->map(fn ($f) => ['question' => $f->question, 'answer' => $f->answer])->all();
 
     if (empty($faqs)) {

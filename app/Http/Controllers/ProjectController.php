@@ -8,7 +8,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::inLocale()->published()->orderBy('sort_order')->paginate(12);
+        $projects = Project::availableIn()->published()->orderBy('sort_order')->paginate(12);
 
         return view('projects.index', compact('projects'));
     }

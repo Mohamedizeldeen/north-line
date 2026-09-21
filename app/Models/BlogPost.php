@@ -2,24 +2,27 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\HasLocale;
+use App\Models\Concerns\HasBilingualSlug;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BlogPost extends Model
 {
-    use HasFactory, HasLocale;
+    use HasFactory, HasBilingualSlug;
 
     protected $fillable = [
         'is_technical',
-        'translation_group_id',
-        'locale',
         'user_id',
-        'title',
-        'slug',
-        'excerpt',
-        'content',
+        'title_ar',
+        'title_en',
+        'slug_ar',
+        'slug_en',
+        'excerpt_ar',
+        'excerpt_en',
+        'content_ar',
+        'content_en',
         'featured_image',
         'is_published',
         'published_at',
@@ -44,8 +47,23 @@ class BlogPost extends Model
         return $query->where('is_published', true)->whereNotNull('published_at')->where('published_at', '<=', now());
     }
 
-    public function getRouteKeyName(): string
+    protected function title(): Attribute
     {
-        return 'slug';
+        return Attribute::make(get: fn () => $this->{'title_'.app()->getLocale()});
+    }
+
+    protected function slug(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->{'slug_'.app()->getLocale()});
+    }
+
+    protected function excerpt(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->{'excerpt_'.app()->getLocale()});
+    }
+
+    protected function content(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->{'content_'.app()->getLocale()});
     }
 }

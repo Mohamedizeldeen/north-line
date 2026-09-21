@@ -11,13 +11,9 @@ use Illuminate\Validation\ValidationException;
 
 class BlogPostController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $posts = BlogPost::with('author')
-            ->when($request->filled('locale'), fn ($q) => $q->where('locale', $request->string('locale')))
-            ->latest()
-            ->paginate(15)
-            ->withQueryString();
+        $posts = BlogPost::with('author')->latest()->paginate(15);
 
         return view('admin.blog-posts.index', compact('posts'));
     }
@@ -29,30 +25,29 @@ class BlogPostController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $this->validatePair($request);
-        $shared = $this->sharedAttributes($request, null);
+        $validated = $this->validated($request);
+        $attrs = $this->sharedAttributes($request, null);
+        $attrs['is_published'] = $request->boolean('is_published');
+        $attrs['published_at'] = $this->publishedAt($attrs['is_published'], null);
 
-        $this->savePair($request, $validated, $shared, null, null);
+        BlogPost::create(array_merge($attrs, $this->localizedAttributes($validated)));
 
         return redirect()->route('admin.blog-posts.index')->with('success', 'Blog post created successfully.');
     }
 
     public function edit(BlogPost $blogPost)
     {
-        [$ar, $en] = $this->pair($blogPost);
-
-        return view('admin.blog-posts.edit', compact('blogPost', 'ar', 'en'));
+        return view('admin.blog-posts.edit', compact('blogPost'));
     }
 
     public function update(Request $request, BlogPost $blogPost)
     {
-        $validated = $this->validatePair($request);
+        $validated = $this->validated($request);
+        $attrs = $this->sharedAttributes($request, $blogPost);
+        $attrs['is_published'] = $request->boolean('is_published');
+        $attrs['published_at'] = $this->publishedAt($attrs['is_published'], $blogPost);
 
-        [$ar, $en] = $this->pair($blogPost);
-
-        $shared = $this->sharedAttributes($request, $ar ?? $en);
-
-        $this->savePair($request, $validated, $shared, $ar, $en);
+        $blogPost->update(array_merge($attrs, $this->localizedAttributes($validated)));
 
         return redirect()->route('admin.blog-posts.index')->with('success', 'Blog post updated successfully.');
     }
@@ -64,18 +59,7 @@ class BlogPostController extends Controller
         return redirect()->route('admin.blog-posts.index')->with('success', 'Blog post deleted successfully.');
     }
 
-    /** The Arabic and English rows of the same post, if they exist. */
-    private function pair(BlogPost $blogPost): array
-    {
-        $sibling = $blogPost->translation($blogPost->locale === 'ar' ? 'en' : 'ar');
-
-        return [
-            $blogPost->locale === 'ar' ? $blogPost : $sibling,
-            $blogPost->locale === 'en' ? $blogPost : $sibling,
-        ];
-    }
-
-    private function validatePair(Request $request): array
+    private function validated(Request $request): array
     {
         $validated = $request->validate([
             'title_ar' => 'nullable|string|max:255',
@@ -110,7 +94,22 @@ class BlogPostController extends Controller
         return $validated;
     }
 
-    /** Fields that are not language-specific: one value shared by both rows. */
+    /** Title/slug/excerpt/content, per language, cleared when that language's title is blank. */
+    private function localizedAttributes(array $validated): array
+    {
+        return [
+            'title_ar' => $validated['title_ar'],
+            'slug_ar' => $validated['title_ar'] ? Str::slug($validated['title_ar']) : null,
+            'excerpt_ar' => $validated['title_ar'] ? $validated['excerpt_ar'] : null,
+            'content_ar' => $validated['title_ar'] ? $validated['content_ar'] : null,
+            'title_en' => $validated['title_en'],
+            'slug_en' => $validated['title_en'] ? Str::slug($validated['title_en']) : null,
+            'excerpt_en' => $validated['title_en'] ? $validated['excerpt_en'] : null,
+            'content_en' => $validated['title_en'] ? $validated['content_en'] : null,
+        ];
+    }
+
+    /** Fields that are not language-specific. */
     private function sharedAttributes(Request $request, ?BlogPost $existing): array
     {
         $shared = [
@@ -130,41 +129,6 @@ class BlogPostController extends Controller
         }
 
         return $shared;
-    }
-
-    private function savePair(Request $request, array $validated, array $shared, ?BlogPost $ar, ?BlogPost $en): void
-    {
-        $publish = $request->boolean('is_published');
-
-        if ($validated['title_ar']) {
-            $attrs = array_merge($shared, [
-                'title' => $validated['title_ar'],
-                'slug' => Str::slug($validated['title_ar']),
-                'excerpt' => $validated['excerpt_ar'] ?? null,
-                'content' => $validated['content_ar'],
-                'is_published' => $publish,
-                'published_at' => $this->publishedAt($publish, $ar),
-            ]);
-
-            $ar = $ar ? tap($ar)->update($attrs) : BlogPost::create(array_merge($attrs, ['locale' => 'ar']));
-        }
-
-        if ($validated['title_en']) {
-            $attrs = array_merge($shared, [
-                'title' => $validated['title_en'],
-                'slug' => Str::slug($validated['title_en']),
-                'excerpt' => $validated['excerpt_en'] ?? null,
-                'content' => $validated['content_en'],
-                'is_published' => $publish,
-                'published_at' => $this->publishedAt($publish, $en),
-            ]);
-
-            $en = $en ? tap($en)->update($attrs) : BlogPost::create(array_merge($attrs, ['locale' => 'en']));
-        }
-
-        if ($ar && $en) {
-            $ar->pairWith($en);
-        }
     }
 
     private function publishedAt(bool $publish, ?BlogPost $existing): ?\Illuminate\Support\Carbon

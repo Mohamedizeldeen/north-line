@@ -8,46 +8,33 @@ use Illuminate\Database\Seeder;
 /**
  * The eleven service areas North Line actually sells, in Arabic and English.
  *
- * Replaces the fashion-vertical product catalog from ProductSeeder. Arabic
- * and English rows are paired through translation_group_id so the language
- * switcher and hreflang can find each other. Idempotent — safe to re-run.
+ * Replaces the fashion-vertical product catalog from ProductSeeder. Each
+ * service is one row carrying both languages. Idempotent — safe to re-run.
  */
 class ServiceSeeder extends Seeder
 {
     public function run(): void
     {
         foreach ($this->services() as $order => $service) {
-            $ar = System::updateOrCreate(
-                ['locale' => 'ar', 'slug' => $service['ar']['slug']],
-                [
-                    'title' => $service['ar']['title'],
-                    'description' => $service['ar']['description'],
-                    'content' => $service['ar']['content'],
-                    'is_published' => true,
-                    'sort_order' => $order,
-                ]
-            );
-
-            // The Arabic row anchors the group: Arabic is the primary language.
-            $ar->forceFill(['translation_group_id' => $ar->translation_group_id ?? $ar->id])->save();
-
             System::updateOrCreate(
-                ['locale' => 'en', 'slug' => $service['en']['slug']],
+                ['slug_ar' => $service['ar']['slug']],
                 [
-                    'title' => $service['en']['title'],
-                    'description' => $service['en']['description'],
-                    'content' => $service['en']['content'],
+                    'title_ar' => $service['ar']['title'],
+                    'description_ar' => $service['ar']['description'],
+                    'content_ar' => $service['ar']['content'],
+                    'slug_en' => $service['en']['slug'],
+                    'title_en' => $service['en']['title'],
+                    'description_en' => $service['en']['description'],
+                    'content_en' => $service['en']['content'],
                     'is_published' => true,
                     'sort_order' => $order,
-                    'translation_group_id' => $ar->translation_group_id,
                 ]
             );
         }
 
         // The old catalog (fashion products, and the legacy Northxxx rows
         // before them) is not what we sell any more.
-        System::whereNotIn('slug', collect($this->services())
-            ->flatMap(fn ($s) => [$s['ar']['slug'], $s['en']['slug']])->all())
+        System::whereNotIn('slug_ar', collect($this->services())->pluck('ar.slug')->all())
             ->update(['is_published' => false]);
     }
 

@@ -2,7 +2,7 @@
 @section('page-title', 'Edit System')
 
 @section('content')
-@php $primary = $ar ?? $en; @endphp
+@php $primary = $system; @endphp
 <div class="max-w-5xl">
     <h2 class="text-xl font-bold mb-6">Edit System</h2>
 
@@ -10,8 +10,7 @@
         @csrf @method('PUT')
 
         @include('admin.partials.bilingual-fields', [
-            'ar' => $ar,
-            'en' => $en,
+            'item' => $system,
             'fields' => [
                 ['key' => 'title', 'label' => 'Title'],
                 ['key' => 'description', 'label' => 'Description', 'type' => 'textarea', 'rows' => 3],

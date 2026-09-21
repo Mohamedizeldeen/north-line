@@ -43,4 +43,4 @@ it('renders the clients page and lists only published clients', function () {
 it('keeps the project page free of an external visit link', function () {
     $this->get('/en/projects/al-noor-medical-center')->assertOk()
         ->assertDontSee(__('work.visit'));
-})->skip(fn () => ! \App\Models\Project::where('slug', 'al-noor-medical-center')->exists(), 'seed project missing');
+})->skip(fn () => ! \App\Models\Project::where('slug_en', 'al-noor-medical-center')->exists(), 'seed project missing');

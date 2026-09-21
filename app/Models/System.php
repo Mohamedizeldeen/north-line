@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\HasLocale;
+use App\Models\Concerns\HasBilingualSlug;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class System extends Model
 {
-    use HasFactory, HasLocale;
+    use HasFactory, HasBilingualSlug;
 
     protected $fillable = [
-        'translation_group_id',
-        'locale',
-        'title',
-        'slug',
-        'description',
-        'content',
+        'title_ar',
+        'title_en',
+        'slug_ar',
+        'slug_en',
+        'description_ar',
+        'description_en',
+        'content_ar',
+        'content_en',
         'image',
         'video_url',
         'video_path',
@@ -37,8 +40,23 @@ class System extends Model
         return $query->where('is_published', true);
     }
 
-    public function getRouteKeyName(): string
+    protected function title(): Attribute
     {
-        return 'slug';
+        return Attribute::make(get: fn () => $this->{'title_'.app()->getLocale()});
+    }
+
+    protected function slug(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->{'slug_'.app()->getLocale()});
+    }
+
+    protected function description(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->{'description_'.app()->getLocale()});
+    }
+
+    protected function content(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->{'content_'.app()->getLocale()});
     }
 }

@@ -52,7 +52,7 @@ it('lets an admin-managed translation override the page copy', function () {
 });
 
 it('renders DB faqs over the lang-file defaults on the contact page', function () {
-    Faq::create(['locale' => 'ar', 'question' => 'سؤال مخصص جداً', 'answer' => 'جواب مخصص', 'is_published' => true, 'sort_order' => 0]);
+    Faq::create(['question_ar' => 'سؤال مخصص جداً', 'answer_ar' => 'جواب مخصص', 'is_published' => true, 'sort_order' => 0]);
 
     $this->get('/ar/contact')->assertOk()->assertSee('سؤال مخصص جداً', false);
 });
